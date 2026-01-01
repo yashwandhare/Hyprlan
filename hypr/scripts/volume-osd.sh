@@ -1,9 +1,25 @@
-#!/bin/bash
-volume=$(pamixer --get-volume)
-muted=$(pamixer --get-mute)
+#!/usr/bin/env bash
 
-if [ "$muted" = "true" ]; then
-    notify-send -t 1000 -h string:x-canonical-private-synchronous:volume "Volume: MUTED" -h int:value:0
+VOL_RAW=$(wpctl get-volume @DEFAULT_AUDIO_SINK@ 2>/dev/null) || exit 1
+VOL=$(echo "$VOL_RAW" | awk '{print int($2 * 100)}')
+# Validate VOL is numeric
+if ! [[ "$VOL" =~ ^[0-9]+$ ]]; then
+    VOL=0
+fi
+MUTED=$(echo "$VOL_RAW" | grep -q MUTED && echo yes || echo no)
+
+if [ "$MUTED" = "yes" ]; then
+    notify-send \
+      -t 1000 \
+      -u normal \
+      -h string:x-dunst-stack-tag:volume \
+      -h int:value:0 \
+      "Volume" "Muted"
 else
-    notify-send -t 1000 -h string:x-canonical-private-synchronous:volume "Volume: ${volume}%" -h int:value:$volume
+    notify-send \
+      -t 1000 \
+      -u normal \
+      -h string:x-dunst-stack-tag:volume \
+      -h int:value:"$VOL" \
+      "Volume" "${VOL}%"
 fi

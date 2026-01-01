@@ -1,4 +1,9 @@
-#!/bin/bash
+#!/usr/bin/env bash
+
+if ! command -v wofi >/dev/null 2>&1; then
+    notify-send -u critical "Quick Settings" "wofi is not installed"
+    exit 1
+fi
 
 choice=$(printf "Wi-Fi\nBluetooth\nAudio\nBrightness\nPower\n" | wofi --dmenu --prompt "Quick Settings")
 

@@ -2,6 +2,7 @@
   "layer": "top",
   "position": "top",
   "exclusive": true,
+  "passthrough": false,
   "height": 34,
   "margin-top": 6,
   "margin-left": 8,
@@ -13,19 +14,20 @@
     "hyprland/window"
   ],
   "modules-center": [
-     "clock",
+    "clock",
     "mpris"
   ],
   "modules-right": [
     "cpu",
     "temperature",
     "memory",
+    "custom/gpu",
     "disk",
     "pulseaudio",
     "network",
     "bluetooth",
-    "battery",
-    "custom/kdeconnect"
+    "custom/kdeconnect",
+    "battery"
   ],
 
   "hyprland/workspaces": {
@@ -73,12 +75,12 @@
   },
 
   "disk": {
-  "interval": 60,
-  "format": " {percentage_used}%",
-  "path": "/",
-  "tooltip": "{used} / {total}",
-  "on-click": "nautilus"
-},
+    "interval": 60,
+    "format": " {percentage_used}%",
+    "path": "/",
+    "tooltip": "{used} / {total}",
+    "on-click": "nautilus"
+  },
 
   "pulseaudio": {
     "format": "{icon} {volume}%",
@@ -98,60 +100,61 @@
   },
 
   "mpris": {
-  "format": "{player_icon} {dynamic}",
-  "format-paused": "{player_icon} {dynamic}",
-  "player-icons": {
-    "spotify": "",
-    "vlc": "󰕼",
-    "mpv": "󰐹",
-    "firefox": "",
-    "chromium": "",
-    "default": "󰎈"
+    "format": "{player_icon} {dynamic}",
+    "format-paused": "{player_icon} {dynamic}",
+    "player-icons": {
+      "spotify": "",
+      "vlc": "󰕼",
+      "mpv": "󰐹",
+      "firefox": "",
+      "chromium": "",
+      "default": "󰎈"
+    },
+    "dynamic-len": 30,
+    "tooltip": true,
+    "tooltip-format": "{player}: {artist} - {title}",
+    "on-click": "playerctl play-pause",
+    "on-scroll-up": "playerctl next",
+    "on-scroll-down": "playerctl previous",
+    "ignored-players": ["chromium"]
   },
-  "dynamic-len": 30,
-  "tooltip": true,
-  "tooltip-format": "{player}: {artist} - {title}",
-  "on-click": "playerctl play-pause",
-  "on-scroll-up": "playerctl next",
-  "on-scroll-down": "playerctl previous",
-  "ignored-players": ["chromium"] 
-},
+
   "network": {
-  "format-wifi": "{icon}",
-  "format-ethernet": "",
-  "format-disconnected": "󰤮",
-  "tooltip-format-wifi": "{essid} • {signalStrength}%",
-  "format-icons": [
-    "󰤯",
-    "󰤟",
-    "󰤢",
-    "󰤥",
-    "󰤨"
-  ],
-  "on-click": "nm-connection-editor"
-},
+    "format": "{icon}",
+    "format-wifi": "{icon}",
+    "format-ethernet": "",
+    "format-disconnected": "󰤮",
+    "tooltip-format-wifi": "{essid} • {signalStrength}%",
+    "format-icons": [
+      "󰤯",
+      "󰤟",
+      "󰤢",
+      "󰤥",
+      "󰤨"
+    ],
+    "on-click": "nm-connection-editor"
+  },
 
   "bluetooth": {
     "format": "",
-    "format-connected": " {num_connections}",
-    "format-disabled": " Off",
-    "tooltip-format": "{controller_alias}\t{controller_address}",
-    "tooltip-format-connected": "{controller_alias}\t{controller_address}\n\n{device_enumerate}",
-    "tooltip-format-enumerate-connected": "{device_alias}\t{device_address}",
+    "format-connected": "",
+    "format-disabled": "",
+    "tooltip-format": "{controller_alias}\n\n{device_enumerate}",
+    "tooltip-format-enumerate-connected": "{device_alias}",
     "on-click": "blueman-manager"
   },
 
   "battery": {
-  "states": {
-    "good": 95,
-    "warning": 30,
-    "critical": 15
+    "states": {
+      "good": 95,
+      "warning": 30,
+      "critical": 15
+    },
+    "format": "{icon} {capacity}%",
+    "format-charging": " {capacity}%",
+    "format-plugged": " {capacity}%",
+    "format-icons": ["", "", "", "", ""]
   },
-  "format": "{icon} {capacity}%",
-  "format-charging": " {capacity}%",
-  "format-plugged": " {capacity}%",
-  "format-icons": ["", "", "", "", ""]
-},
 
   "clock": {
     "format": "{:%H:%M}",
@@ -175,10 +178,18 @@
       "on-scroll-down": "shift_down"
     }
   },
+
   "custom/kdeconnect": {
-  "exec": "~/.config/waybar/scripts/kdeconnect-status.sh",
-  "interval": 5,
-  "on-click": "kdeconnect-app",
-  "tooltip": "KDE Connect"
-} 
+    "exec": "~/.config/waybar/scripts/kdeconnect-status.sh",
+    "interval": 5,
+    "on-click": "kdeconnect-app",
+    "tooltip": "KDE Connect"
+  },
+
+  "custom/gpu": {
+    "exec": "~/.config/waybar/scripts/gpu-usage.sh",
+    "interval": 3,
+    "tooltip": "NVIDIA GPU usage",
+    "on-click": "kitty -e nvtop"
+  }
 }

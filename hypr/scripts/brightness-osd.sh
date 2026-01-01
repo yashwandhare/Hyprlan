@@ -1,5 +1,18 @@
-#!/bin/bash
-brightness=$(brightnessctl get)
-max=$(brightnessctl max)
-percent=$((brightness * 100 / max))
-notify-send -t 1000 -h string:x-canonical-private-synchronous:brightness "Brightness: ${percent}%" -h int:value:$percent
+#!/usr/bin/env bash
+
+BRIGHT=$(brightnessctl get 2>/dev/null) || exit 1
+MAX=$(brightnessctl max 2>/dev/null) || exit 1
+
+# Prevent division by zero
+if [ "$MAX" -eq 0 ]; then
+    exit 1
+fi
+
+PERCENT=$(( BRIGHT * 100 / MAX ))
+
+notify-send \
+  -t 1000 \
+  -u low \
+  -h string:x-dunst-stack-tag:brightness \
+  -h int:value:"$PERCENT" \
+  "Brightness" "${PERCENT}%"

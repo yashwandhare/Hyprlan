@@ -1,6 +1,6 @@
 * {
     font-family: JetBrains Mono Nerd Font, JetBrains Mono, sans-serif;
-    font-size: 14px;
+    font-size: 15px;
     font-weight: 500;
     color: #E3E6E8; /* Soft Off-White */
     border: none;
@@ -10,9 +10,10 @@
 
 window#waybar {
     background: rgba(20, 20, 20, 0.92); /* Neutral Dark Grey */
-    border-bottom: 1px solid rgba(162, 182, 201, 0.2); /* Faint Blue Seperator */
+    border-bottom: 1px solid rgba(162, 182, 201, 0.2); /* Faint Blue Separator */
 }
 
+/* ===== COMMON MODULE PADDING ===== */
 #workspaces,
 #window,
 #cpu,
@@ -23,11 +24,15 @@ window#waybar {
 #pulseaudio,
 #network,
 #bluetooth,
-#clock {
+#clock,
+#mpris,
+#custom-gpu,
+#custom-kdeconnect {
     background: transparent;
     padding: 0 10px;
 }
 
+/* ===== WORKSPACES ===== */
 #workspaces {
     padding: 0;
     margin-left: 4px;
@@ -35,7 +40,7 @@ window#waybar {
 
 #workspaces button {
     padding: 0 10px;
-    color: #7F8490; /* Desaturated Grey (Inactive) */
+    color: #7F8490; /* Inactive */
     background: transparent;
     border-bottom: 2px solid transparent;
     transition: all 0.3s ease;
@@ -44,7 +49,7 @@ window#waybar {
 #workspaces button.active {
     color: #A2B6C9; /* Pastel Steel Blue */
     border-bottom: 2px solid #A2B6C9;
-    background: rgba(162, 182, 201, 0.1); /* Very faint blue tint */
+    background: rgba(162, 182, 201, 0.1);
 }
 
 #workspaces button:hover {
@@ -52,34 +57,50 @@ window#waybar {
     background: rgba(255, 255, 255, 0.05);
 }
 
+/* ===== WINDOW TITLE ===== */
 #window {
-    color: #A2B6C9; /* Pastel Steel Blue */
+    color: #A2B6C9;
     font-weight: 400;
 }
 
+/* ===== STATS ===== */
 #cpu,
 #temperature,
 #memory,
 #disk {
-    color: #9da1ad; /* Light Grey */
+    color: #9da1ad;
 }
 
+/* ===== BATTERY ===== */
 #battery {
     color: #E3E6E8;
 }
 
 #battery.charging {
-    color: #A2B6C9; /* Matches accent */
+    color: #A2B6C9;
 }
 
 #battery.warning {
-    color: #DBD6B0; /* Pastel Wheat/Yellow */
+    color: #DBD6B0;
 }
 
 #battery.critical {
-    color: #D9A7A7; /* Pastel Salmon/Red */
+    color: #D9A7A7;
 }
 
+/* Battery full / capped (80–100%) */
+#battery.full,
+#battery.plugged {
+    color: #7FAE8A; /* Deep pastel green */
+    font-weight: 600;
+}
+
+/* Plugged but not charging (your 80% cap case) */
+#battery:not(.charging):not(.discharging) {
+    color: #7FAE8A;
+}
+
+/* ===== AUDIO ===== */
 #pulseaudio {
     color: #E3E6E8;
 }
@@ -88,6 +109,7 @@ window#waybar {
     color: #D98C8C; /* Pastel red */
 }
 
+/* ===== NETWORK ===== */
 #network {
     color: #E3E6E8;
 }
@@ -96,48 +118,53 @@ window#waybar {
     color: #5b606b;
 }
 
+/* ===== BLUETOOTH ===== */
+#bluetooth {
+    color: #E3E6E8;
+}
+
+#bluetooth.connected {
+    color: #7FAE8A; /* Green when connected */
+}
+
+#bluetooth.disabled {
+    color: #5b606b;
+}
+
+/* ===== KDE CONNECT ===== */
+#custom-kdeconnect {
+    color: #7FAE8A;
+}
+
+#custom-kdeconnect.disconnected {
+    color: #5b606b;
+}
+
+/* ===== GPU ===== */
+#custom-gpu {
+    color: #7FAE8A;
+    font-weight: 500;
+}
+
+/* ===== CLOCK ===== */
 #clock {
     color: #E3E6E8;
     font-weight: 600;
     margin-right: 4px;
 }
 
-/* Tooltips: Dark grey with faint blue border */
-tooltip {
-    background: #1a1b1e; 
-    border: 1px solid #45475a; 
+/* ===== MPRIS ===== */
+#mpris {
     color: #A2B6C9;
-}
-#mpris 
-{
-    color: #A2B6C9;
-    padding: 0 10px;
 }
 
 #mpris.paused {
     color: #7F8490;
 }
-#bluetooth.disabled {
-    color: #5b606b;
-}
-#custom-kdeconnect {
-    color: #7FAE8A; /* Same deep pastel green as battery */
-    padding: 0 10px;
-}
 
-#custom-kdeconnect.disconnected {
-    color: #5b606b;
-}
-/* Battery – full / capped */
-#battery.full,
-#battery.plugged {
-    color: #7FAE8A; /* Deep pastel green */
-}
-
-/* Optional: when NOT charging but plugged (your 80% case) */
-#battery:not(.charging):not(.discharging) {
-    color: #7FAE8A;
-}
-#battery.full.plugged {
-    font-weight: 600;
+/* ===== TOOLTIPS ===== */
+tooltip {
+    background: #1a1b1e;
+    border: 1px solid #45475a;
+    color: #A2B6C9;
 }
