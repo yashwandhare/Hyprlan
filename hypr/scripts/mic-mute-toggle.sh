@@ -1,9 +1,8 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-# Toggle microphone mute
-wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle
+wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle 2>/dev/null || exit 1
 
-# Get current mute status
-MUTE=$(wpctl get-volume @DEFAULT_AUDIO_SOURCE@ | grep -q MUTED && echo "Muted" || echo "Unmuted")
+MUTE_STATUS=$(wpctl get-volume @DEFAULT_AUDIO_SOURCE@ 2>/dev/null)
+MUTE=$(echo "$MUTE_STATUS" | grep -q "MUTED" && echo "Muted" || echo "Unmuted")
 
 notify-send "Microphone" "󰍬 $MUTE"

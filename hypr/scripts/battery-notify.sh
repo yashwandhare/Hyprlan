@@ -6,7 +6,8 @@ exec 9>"$LOCK" || exit 0
 flock -n 9 || exit 0
 
 while sleep 60; do
-    BAT=$(ls /sys/class/power_supply | grep BAT | head -n1) || continue
+    # Find first battery device more efficiently
+    BAT=$(find /sys/class/power_supply -maxdepth 1 -name "BAT*" -type d 2>/dev/null | head -n1 | xargs -r basename)
     [ -z "$BAT" ] && continue
     [ -f "/sys/class/power_supply/$BAT/capacity" ] || continue
     [ -f "/sys/class/power_supply/$BAT/status" ] || continue

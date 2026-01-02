@@ -2,13 +2,9 @@
 
 BRIGHT=$(brightnessctl get 2>/dev/null) || exit 1
 MAX=$(brightnessctl max 2>/dev/null) || exit 1
+[ "$MAX" -eq 0 ] && exit 1
 
-# Prevent division by zero
-if [ "$MAX" -eq 0 ]; then
-    exit 1
-fi
-
-PERCENT=$(( BRIGHT * 100 / MAX ))
+PERCENT=$((BRIGHT * 100 / MAX))
 
 notify-send \
   -t 1000 \

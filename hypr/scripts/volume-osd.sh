@@ -2,10 +2,7 @@
 
 VOL_RAW=$(wpctl get-volume @DEFAULT_AUDIO_SINK@ 2>/dev/null) || exit 1
 VOL=$(echo "$VOL_RAW" | awk '{print int($2 * 100)}')
-# Validate VOL is numeric
-if ! [[ "$VOL" =~ ^[0-9]+$ ]]; then
-    VOL=0
-fi
+[[ "$VOL" =~ ^[0-9]+$ ]] || VOL=0
 MUTED=$(echo "$VOL_RAW" | grep -q MUTED && echo yes || echo no)
 
 if [ "$MUTED" = "yes" ]; then

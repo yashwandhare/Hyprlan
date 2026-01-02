@@ -9,7 +9,10 @@ UTIL=$(nvidia-smi \
   --query-gpu=utilization.gpu \
   --format=csv,noheader,nounits 2>/dev/null)
 
-UTIL=${UTIL:-0}
+# Validate UTIL is numeric
+if ! [[ "$UTIL" =~ ^[0-9]+$ ]]; then
+    UTIL=0
+fi
 
 if (( UTIL > THRESHOLD )); then
     echo "󰢮 ${UTIL}%"

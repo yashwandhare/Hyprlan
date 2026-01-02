@@ -2,21 +2,14 @@
   "layer": "top",
   "position": "top",
   "exclusive": true,
-  "passthrough": false,
   "height": 34,
   "margin-top": 6,
   "margin-left": 8,
   "margin-right": 8,
   "spacing": 4,
 
-  "modules-left": [
-    "hyprland/workspaces",
-    "hyprland/window"
-  ],
-  "modules-center": [
-    "clock",
-    "mpris"
-  ],
+  "modules-left": ["hyprland/workspaces", "hyprland/window"],
+  "modules-center": ["clock", "mpris"],
   "modules-right": [
     "custom/screen-record",
     "custom/mic-indicator",
@@ -37,11 +30,7 @@
   "hyprland/workspaces": {
     "format": "{icon}",
     "format-icons": {
-      "1": "I",
-      "2": "II",
-      "3": "III",
-      "4": "IV",
-      "5": "V"
+      "1": "I", "2": "II", "3": "III", "4": "IV", "5": "V"
     },
     "persistent-workspaces": {
       "1": [], "2": [], "3": [], "4": [], "5": []
@@ -129,13 +118,7 @@
     "format-ethernet": "󰌽",
     "format-disconnected": "󰌞",
     "tooltip-format-wifi": "{essid} • {signalStrength}%",
-    "format-icons": [
-      "󰤯",
-      "󰤟",
-      "󰤢",
-      "󰤥",
-      "󰤨"
-    ],
+    "format-icons": ["󰤯", "󰤟", "󰤢", "󰤥", "󰤨"],
     "on-click": "nm-connection-editor"
   },
 

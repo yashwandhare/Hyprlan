@@ -9,18 +9,18 @@ choice=$(printf "Wi-Fi\nBluetooth\nAudio\nBrightness\nPower\n" | wofi --dmenu --
 
 case "$choice" in
   "Wi-Fi")
-    nm-connection-editor
+    nm-connection-editor &
     ;;
   "Bluetooth")
-    blueman-manager
+    blueman-manager &
     ;;
   "Audio")
-    pavucontrol
+    pavucontrol &
     ;;
   "Brightness")
-    kitty -e brightnessctl
+    kitty -e brightnessctl &
     ;;
   "Power")
-    wlogout
+    wlogout &
     ;;
 esac
