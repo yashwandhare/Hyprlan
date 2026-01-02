@@ -68,81 +68,87 @@ window#waybar {
 #temperature,
 #memory,
 #disk {
-    color: #9da1ad;
+    color: #9fa3ac;
+}
+
+#temperature.critical {
+    color: #d99a9a;
+    font-weight: 500;
 }
 
 /* ===== BATTERY ===== */
 #battery {
-    color: #E3E6E8;
+    color: #E3E6E8; /* default white */
+    font-weight: 500;
 }
 
 #battery.charging {
-    color: #A2B6C9;
-}
-
-#battery.warning {
-    color: #DBD6B0;
-}
-
-#battery.critical {
-    color: #D9A7A7;
-}
-
-/* Battery full / capped (80–100%) */
-#battery.full,
-#battery.plugged {
-    color: #7FAE8A; /* Deep pastel green */
+    color: #E8D896; /* pastel chrome yellow */
     font-weight: 600;
 }
 
-/* Plugged but not charging (your 80% cap case) */
-#battery:not(.charging):not(.discharging) {
-    color: #7FAE8A;
+#battery.full {
+    color: #8db8a8; /* green */
+    font-weight: 600;
+}
+
+#battery.plugged {
+    color: #8db8a8; /* green */
+    font-weight: 600;
+}
+
+#battery.warning {
+    color: #d9c88a;
+}
+
+#battery.critical {
+    color: #d99a9a;
+    font-weight: 700;
 }
 
 /* ===== AUDIO ===== */
 #pulseaudio {
-    color: #E3E6E8;
+    color: #c5c8cc;
 }
 
 #pulseaudio.muted {
-    color: #D98C8C; /* Pastel red */
+    color: #d99a9a;
 }
 
 /* ===== NETWORK ===== */
 #network {
-    color: #E3E6E8;
+    color: #c5c8cc;
 }
 
 #network.disconnected {
-    color: #5b606b;
+    color: #606469;
 }
 
 /* ===== BLUETOOTH ===== */
 #bluetooth {
-    color: #E3E6E8;
+    color: #c5c8cc;
 }
 
 #bluetooth.connected {
-    color: #7FAE8A; /* Green when connected */
+    color: #8db8a8;
 }
 
 #bluetooth.disabled {
-    color: #5b606b;
+    color: #606469;
 }
 
 /* ===== KDE CONNECT ===== */
 #custom-kdeconnect {
-    color: #7FAE8A;
+    color: #8db8a8;
 }
 
 #custom-kdeconnect.disconnected {
-    color: #5b606b;
+    color: #606469;
 }
 
 /* ===== GPU ===== */
 #custom-gpu {
-    color: #7FAE8A;
+    color: #9fa3ac;
     font-weight: 500;
 }
 
@@ -167,4 +173,30 @@ tooltip {
     background: #1a1b1e;
     border: 1px solid #45475a;
     color: #A2B6C9;
+}
+#custom-clipboard {
+    color: #9da1ad; /* Pastel steel blue */
+    padding: 0 10px;
+}
+
+#custom-clipboard:hover {
+    color: #E3E6E8;
+}
+
+#custom-mic-muted {
+    color: #d99a9a;
+    padding: 0 8px;
+    font-weight: bold;
+}
+
+#custom-screen-record {
+    color: #d99a9a;
+    padding: 0 8px;
+    font-weight: bold;
+}
+
+#custom-mic-indicator {
+    color: #8db8a8;
+    padding: 0 8px;
+    font-weight: bold;
 }

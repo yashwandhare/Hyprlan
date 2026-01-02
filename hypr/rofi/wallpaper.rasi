@@ -1,5 +1,11 @@
 configuration {
     show-icons: true;
+    scroll-method: 0;
+    cycle: false;
+    disable-history: true;
+    click-to-exit: true;
+    matching: "normal";
+    sort: false;
 }
 
 * {
@@ -13,24 +19,24 @@ configuration {
 
 window {
     width: 50%;
-    height: 50%;
+    height: 48%;
     location: center;
     anchor: center;
-    background-color: #141414;
+    background-color: rgba(20, 20, 20, 0.92);
     border: 1px;
     border-color: rgba(162, 182, 201, 0.2); 
 }
 
 mainbox {
-    padding: 20px;
-    spacing: 15px;
+    padding: 12px;
+    spacing: 6px;
     children: [ inputbar, listview ];
 }
 
 inputbar {
     children: [ prompt, entry ];
-    spacing: 12px;
-    padding: 14px 18px;
+    spacing: 10px;
+    padding: 10px 15px;
     background-color: #1e1e1e;
     border: 1px;
     border-color: rgba(162, 182, 201, 0.2);
@@ -49,11 +55,17 @@ entry {
 }
 
 listview {
-    columns: 5; /* Reduced columns to make room for bigger images */
-    lines: 2;   /* Reduced lines to remove the empty space below */
-    spacing: 20px;
-    fixed-height: false; /* Allow dynamic height */
-    padding: 10px;
+    columns: 5;
+    lines: 3;
+    spacing: 8px;
+    fixed-height: true;
+    fixed-columns: true;
+    fixed-lines: true;
+    padding: 3px;
+    scroll-method: 1;
+    dynamic: false;
+    reverse: false;
+    require-input: false;
 }
 
 scrollbar {
@@ -62,10 +74,9 @@ scrollbar {
     handle-width: 4px;
     background-color: #1e1e1e;
 }
-
 element {
     orientation: vertical;
-    padding: 10px;
+    padding: 6px;
     background-color: transparent;
     border: 1px;
     border-color: transparent;
@@ -84,10 +95,10 @@ element-icon {
 }
 
 element-text {
-    margin: 10px 0 0 0;
+    margin: 8px 0 0 0;
     horizontal-align: 0.5;
     text-color: inherit;
-    font: "JetBrains Mono Nerd Font 11";
+    font: "JetBrains Mono Nerd Font 10";
 }
 
 element selected.normal element-text {

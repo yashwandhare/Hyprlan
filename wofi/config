@@ -1,9 +1,10 @@
 show=drun
+prompt=
 allow_images=true
 image_size=32
 columns=1
 lines=10
-width=700
+width=450
 location=center
 no_actions=true
 hide_scroll=false
