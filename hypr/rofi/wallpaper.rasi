@@ -89,7 +89,7 @@ element selected.normal {
 }
 
 element-icon {
-    size: 150px; /* INCREASED from 100px to 240px */
+    size: 150px;
     horizontal-align: 0.5;
     cursor: inherit;
 }

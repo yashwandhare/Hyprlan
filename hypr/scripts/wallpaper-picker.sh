@@ -52,9 +52,9 @@ wall="$WALLDIR/$selected"
 [ -f "$wall" ] || exit 0
 
 (
-    swww img "$wall" \
-        --transition-type "$TRANSITION_TYPE" \
-        --transition-duration "$TRANSITION_DURATION" \
-        --transition-fps 60
-    ln -sfn "$wall" "$STATE"
+swww img "$wall" \
+    --transition-type "$TRANSITION_TYPE" \
+    --transition-duration "$TRANSITION_DURATION" \
+    --transition-fps 60
+ln -sfn "$wall" "$STATE"
 ) & disown

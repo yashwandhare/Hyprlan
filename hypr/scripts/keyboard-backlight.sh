@@ -11,7 +11,7 @@ done
 
 # Fallback to common ASUS path if not found
 if [[ -z "$DEVICE" ]]; then
-    DEVICE="/sys/class/leds/asus::kbd_backlight"
+DEVICE="/sys/class/leds/asus::kbd_backlight"
 fi
 
 if [[ ! -d "$DEVICE" ]] || [[ ! -f "$DEVICE/brightness" ]] || [[ ! -f "$DEVICE/max_brightness" ]]; then

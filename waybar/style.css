@@ -26,7 +26,9 @@ window#waybar {
 #clock,
 #mpris,
 #custom-gpu,
-#custom-kdeconnect {
+#custom-kdeconnect,
+#custom-dnd,
+#custom-notifications {
     background: transparent;
     padding: 0 10px;
 }
@@ -174,4 +176,20 @@ tooltip {
     color: #8db8a8;
     padding: 0 8px;
     font-weight: bold;
+}
+
+#custom-dnd {
+    color: #ff6b6b;
+    padding: 0 8px;
+    font-weight: 500;
+}
+
+#custom-notifications {
+    color: #A2B6C9;
+    padding: 0 8px;
+    font-weight: 400;
+}
+
+#custom-notifications:hover {
+    color: #ffffff;
 }

@@ -2,7 +2,7 @@
 
 STATE_FILE="/tmp/mic_indicator_state"
 
-# 1. Check if any real (non-monitor) mic source is RUNNING
+# Check if any real (non-monitor) mic source is RUNNING
 running_sources=$(pactl list sources short 2>/dev/null | \
     awk '$2 !~ /\.monitor$/ && $7 == "RUNNING"')
 
@@ -12,46 +12,29 @@ if [ -z "$running_sources" ]; then
     exit 0
 fi
 
-# 2. Get PIDs of apps recording from mic
-pids=$(pactl list source-outputs 2>/dev/null | awk '
-/^Source Output #/ {
-    in_output=1
-    pid=""
-    source=""
+# Get apps using the mic
+apps=$(pactl list source-outputs 2>/dev/null | awk '
+BEGIN { app=""; binary=""; source="" }
+/^Source Output #/ { app=""; binary=""; source="" }
+/^\tSource:/ { source=$2 }
+/^\tapplication.name = "/ { 
+    match($0, /"([^"]+)"/, arr)
+    app=arr[1]
 }
-/^\tSource:/ {
-    if (in_output) source=$2
+/^\tapplication.process.binary = "/ {
+    match($0, /"([^"]+)"/, arr)
+    binary=arr[1]
 }
-/^\tapplication.process.id = / {
-    if (in_output) {
-        gsub(/.* = /, "", $0)
-        pid=$0
+/^$/ {
+    if (source !~ /\.monitor$/) {
+        if (binary != "") print binary
+        else if (app != "") print app
     }
+    app=""; binary=""; source=""
 }
-/^[^ \t]/ && in_output {
-    if (pid != "" && source !~ /\.monitor$/) {
-        print pid
-    }
-    in_output=0
-}
-END {
-    if (in_output && pid != "" && source !~ /\.monitor$/) {
-        print pid
-    }
-}
-' | sort -u)
+' | sort -u | paste -sd, - | sed 's/,/, /g')
 
-# 3. Resolve PIDs → process names
-apps=""
-for pid in $pids; do
-    if [ -r "/proc/$pid/comm" ]; then
-        apps+="$(cat /proc/$pid/comm), "
-    fi
-done
-
-apps=${apps%, }
-
-# 4. Notify once per activation
+# Notify once per activation
 if [ "$(cat "$STATE_FILE" 2>/dev/null)" != "active" ]; then
     if [ -n "$apps" ]; then
         notify-send -u low -t 2000 "Microphone" "󰍬 In use by: $apps"
@@ -61,7 +44,7 @@ if [ "$(cat "$STATE_FILE" 2>/dev/null)" != "active" ]; then
     echo "active" > "$STATE_FILE"
 fi
 
-# 5. Waybar output
+# Waybar output
 if [ -n "$apps" ]; then
     echo "{\"text\":\"󰍬 MIC\",\"tooltip\":\"Using: $apps\"}"
 else

@@ -29,8 +29,8 @@ while true; do
     if [[ -n "$CURRENT" ]] && [[ -n "$LAST_VALUE" ]] && [[ "$CURRENT" != "$LAST_VALUE" ]]; then
         MAX_BRIGHT=$(cat "$MAX_BRIGHTNESS_FILE" 2>/dev/null || echo "0")
         if [[ -n "$MAX_BRIGHT" ]] && [[ "$MAX_BRIGHT" -gt 0 ]]; then
-            PERCENT=$((CURRENT * 100 / MAX_BRIGHT))
-            notify-send "Keyboard Backlight" "Level: ${PERCENT}%"
+        PERCENT=$((CURRENT * 100 / MAX_BRIGHT))
+        notify-send "Keyboard Backlight" "Level: ${PERCENT}%"
         fi
     fi
     LAST_VALUE="$CURRENT"
