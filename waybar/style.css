@@ -27,6 +27,7 @@ window#waybar {
 #mpris,
 #custom-gpu,
 #custom-kdeconnect,
+#custom-caffeine,
 #custom-dnd,
 #custom-notifications {
     background: transparent;
@@ -79,7 +80,11 @@ window#waybar {
     font-weight: 500;
 }
 
-#battery.charging,
+#battery.charging {
+    color: #F4D03F;
+    font-weight: 600;
+}
+
 #battery.full,
 #battery.plugged {
     color: #8db8a8;
@@ -192,4 +197,9 @@ tooltip {
 
 #custom-notifications:hover {
     color: #ffffff;
+}
+
+#custom-caffeine {
+    color: #9fa3ac;
+    padding: 0 15px;
 }

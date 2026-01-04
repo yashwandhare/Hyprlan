@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-choice=$(printf "󰖩  Wi-Fi\n󰂯  Bluetooth\n󰂛  Do Not Disturb\n󰀵  Software Store\n󰄜  KDE Connect\n󰒍  LocalSend\n󰆍  Config" | \
-    wofi --dmenu --prompt "" --width=300 --height=280 --location=center --hide-scroll --no-actions)
+choice=$(printf "󰖩  Wi-Fi\n󰂯  Bluetooth\n󰂛  Do Not Disturb\n  Caffeine\n󰀵  Software Store\n󰄜  KDE Connect\n󰒍  LocalSend\n󰆍  Config" | \
+    wofi --dmenu --prompt "" --width=300 --height=310 --location=center --hide-scroll --no-actions --cache-file /dev/null)
 
 case "$choice" in
   "󰖩  Wi-Fi")
@@ -12,6 +12,9 @@ case "$choice" in
     ;;
   "󰂛  Do Not Disturb")
     ~/.config/hyprland/hypr/scripts/toggle-dnd.sh
+    ;;
+  "  Caffeine")
+    ~/.config/hyprland/hypr/scripts/toggle-caffeine.sh
     ;;
   "󰀵  Software Store")
     flatpak run org.gnome.Software 2>/dev/null || \

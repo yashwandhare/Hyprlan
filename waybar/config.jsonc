@@ -14,6 +14,7 @@
     "custom/screen-record",
     "custom/mic-indicator",
     "custom/mic-muted",
+    "custom/caffeine",
     "cpu",
     "temperature",
     "memory",
@@ -95,7 +96,7 @@
 
   "mpris": {
     "format": "{player_icon} {dynamic}",
-    "format-paused": "󰎜 {dynamic}",
+    "format-paused": "{player_icon} {dynamic}",
     "player-icons": {
       "spotify": "󰓇",
       "vlc": "󰕼",
@@ -117,7 +118,8 @@
     "format": "{icon}",
     "format-wifi": "{icon}",
     "format-ethernet": "󰌽",
-    "format-disconnected": "󰌞",
+    "format-disconnected": "󰤯",
+    "format-disabled": "󰤮",
     "tooltip-format-wifi": "{essid} • {signalStrength}%",
     "format-icons": ["󰤯", "󰤟", "󰤢", "󰤥", "󰤨"],
     "on-click": "nm-connection-editor"
@@ -168,14 +170,14 @@
   },
 
   "custom/kdeconnect": {
-    "exec": "~/.config/waybar/scripts/kdeconnect-status.sh",
+    "exec": "~/.config/hyprland/waybar/scripts/kdeconnect-status.sh",
     "interval": 5,
     "on-click": "kdeconnect-app",
     "tooltip": "KDE Connect"
   },
 
   "custom/gpu": {
-    "exec": "~/.config/waybar/scripts/gpu-usage.sh",
+    "exec": "~/.config/hyprland/waybar/scripts/gpu-usage.sh",
     "interval": 3,
     "tooltip": "NVIDIA GPU usage",
     "on-click": "kitty -e nvtop"
@@ -184,42 +186,51 @@
   "custom/clipboard": {
     "format": "󰅇",
     "tooltip": "Clipboard",
-    "on-click": "~/.config/waybar/scripts/clipboard.sh",
+    "on-click": "~/.config/hyprland/waybar/scripts/clipboard.sh",
     "on-click-right": "cliphist wipe",
     "interval": 5
   },
 
   "custom/screen-record": {
-    "exec": "~/.config/waybar/scripts/screen-record.sh",
+    "exec": "~/.config/hyprland/waybar/scripts/screen-record.sh",
     "format": "{}",
     "interval": 2
   },
 
   "custom/mic-indicator": {
-    "exec": "~/.config/waybar/scripts/mic-indicator.sh",
+    "exec": "~/.config/hyprland/waybar/scripts/mic-indicator.sh",
     "format": "{}",
     "interval": 1,
     "return-type": "json"
   },
 
   "custom/mic-muted": {
-    "exec": "~/.config/waybar/scripts/mic-muted.sh",
+    "exec": "~/.config/hyprland/waybar/scripts/mic-muted.sh",
     "format": "{}",
     "interval": 1
   },
 
   "custom/dnd": {
-    "exec": "~/.config/waybar/scripts/dnd-status.sh",
+    "exec": "~/.config/hyprland/waybar/scripts/dnd-status.sh",
     "format": "{}",
     "interval": 2,
     "tooltip": "Do Not Disturb"
   },
 
   "custom/notifications": {
-    "exec": "~/.config/waybar/scripts/notifications-icon.sh",
+    "exec": "~/.config/hyprland/waybar/scripts/notifications-icon.sh",
     "format": "{}",
     "interval": 2,
     "tooltip": "Notifications",
     "on-click": "~/.config/hyprland/waybar/scripts/notifications-menu.sh"
+  },
+
+  "custom/caffeine": {
+    "exec": "~/.config/hyprland/waybar/scripts/caffeine-indicator.sh",
+    "format": "{}",
+    "interval": 2,
+    "return-type": "json",
+    "on-click": "~/.config/hyprland/hypr/scripts/toggle-caffeine.sh",
+    "signal": 8
   }
 }
