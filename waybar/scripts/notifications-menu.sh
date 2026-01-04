@@ -7,11 +7,11 @@ touch "$LOG_FILE"
 
 # Get notification history from log
 if [ -s "$LOG_FILE" ]; then
-    # Add Clear All option at top
-    menu_items=$(echo -e "🗑️  Clear All\n────────────────")
+    # Add action buttons at top
+    menu_items=$(echo -e "🗑️  Clear All\n📋  Copy Last\n────────────────")
     
-    # Read notifications from log (most recent first)
-    notif_list=$(tac "$LOG_FILE" | head -20)
+    # Read notifications from log (most recent first) - show last 30
+    notif_list=$(tac "$LOG_FILE" | head -30)
     
     if [ -n "$notif_list" ]; then
         menu_items=$(echo -e "${menu_items}\n${notif_list}")
@@ -19,15 +19,34 @@ if [ -s "$LOG_FILE" ]; then
         menu_items=$(echo -e "${menu_items}\nNo notifications")
     fi
 else
-    menu_items="🗑️  Clear All\n────────────────\nNo notifications"
+    menu_items="🗑️  Clear All\n📋  Copy Last\n────────────────\nNo notifications"
 fi
 
-# Show menu
-choice=$(echo -e "$menu_items" | wofi --dmenu --prompt "" --width=450 --height=400 --location=center --hide-scroll --no-actions)
+# Show menu with better formatting
+choice=$(echo -e "$menu_items" | wofi \
+    --dmenu \
+    --prompt "Notifications" \
+    --width=500 \
+    --height=450 \
+    --location=center \
+    --hide-scroll \
+    --no-actions \
+    --cache-file /dev/null)
 
-# Check if Clear All was selected (match any line starting with the emoji)
+# Handle actions
 if echo "$choice" | grep -q "^🗑️"; then
-    > "$LOG_FILE"  # Clear the log file
+    > "$LOG_FILE"
     dunstctl close-all 2>/dev/null
-    notify-send "Notifications" "All notifications cleared" -t 1000
+    notify-send "Notifications" "All notifications cleared" -t 1000 -u low
+elif echo "$choice" | grep -q "^📋"; then
+    # Copy last notification to clipboard
+    LAST_NOTIF=$(head -n1 "$LOG_FILE" 2>/dev/null)
+    if [ -n "$LAST_NOTIF" ]; then
+        echo "$LAST_NOTIF" | wl-copy
+        notify-send "Notifications" "Last notification copied" -t 1000 -u low
+    fi
+elif [ -n "$choice" ]; then
+    # Copy selected notification to clipboard
+    echo "$choice" | wl-copy
+    notify-send "Notifications" "Copied to clipboard" -t 1000 -u low
 fi

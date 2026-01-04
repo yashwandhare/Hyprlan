@@ -11,7 +11,7 @@ enable_caffeine() {
     if [ ! -f "$STATE_FILE" ]; then
         touch "$STATE_FILE"
         touch "$AUTO_STATE_FILE"
-        pkill -SIGUSR2 hypridle 2>/dev/null
+        systemctl --user kill -s SIGUSR2 hypridle.service 2>/dev/null
         systemctl --user stop hypridle.service 2>/dev/null
         notify-send "Caffeine" "Auto-enabled" -u low
         pkill -RTMIN+8 waybar 2>/dev/null
@@ -23,7 +23,7 @@ disable_caffeine() {
     if [ -f "$AUTO_STATE_FILE" ] && [ -f "$STATE_FILE" ]; then
         rm "$STATE_FILE"
         rm "$AUTO_STATE_FILE"
-        pkill -SIGUSR1 hypridle 2>/dev/null
+        systemctl --user kill -s SIGUSR1 hypridle.service 2>/dev/null
         systemctl --user start hypridle.service 2>/dev/null
         notify-send "Caffeine" "Auto-disabled" -u low
         pkill -RTMIN+8 waybar 2>/dev/null

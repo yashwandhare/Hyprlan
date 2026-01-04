@@ -203,3 +203,9 @@ tooltip {
     color: #9fa3ac;
     padding: 0 15px;
 }
+
+#custom-focus-mode {
+    color: #c9a0dc;
+    font-weight: 500;
+     padding: 0 8px;
+}

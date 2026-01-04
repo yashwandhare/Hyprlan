@@ -15,6 +15,7 @@
     "custom/mic-indicator",
     "custom/mic-muted",
     "custom/caffeine",
+    "custom/focus-mode",
     "cpu",
     "temperature",
     "memory",
@@ -121,6 +122,8 @@
     "format-disconnected": "󰤯",
     "format-disabled": "󰤮",
     "tooltip-format-wifi": "{essid} • {signalStrength}%",
+    "tooltip-format-disconnected": "No connection",
+    "tooltip-format-ethernet": "{ifname}: {ipaddr}",
     "format-icons": ["󰤯", "󰤟", "󰤢", "󰤥", "󰤨"],
     "on-click": "nm-connection-editor"
   },
@@ -207,7 +210,7 @@
   "custom/mic-muted": {
     "exec": "~/.config/hyprland/waybar/scripts/mic-muted.sh",
     "format": "{}",
-    "interval": 1
+    "interval": 2
   },
 
   "custom/dnd": {
@@ -228,9 +231,18 @@
   "custom/caffeine": {
     "exec": "~/.config/hyprland/waybar/scripts/caffeine-indicator.sh",
     "format": "{}",
-    "interval": 2,
+    "interval": 3,
     "return-type": "json",
     "on-click": "~/.config/hyprland/hypr/scripts/toggle-caffeine.sh",
     "signal": 8
+  },
+
+  "custom/focus-mode": {
+    "exec": "~/.config/hyprland/waybar/scripts/focus-mode-indicator.sh",
+    "format": "{}",
+    "interval": 3,
+    "return-type": "json",
+    "on-click": "~/.config/hyprland/hypr/scripts/toggle-focus-mode.sh",
+    "signal": 9
   }
 }
