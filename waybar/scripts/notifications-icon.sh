@@ -3,8 +3,8 @@
 DND_FILE="$HOME/.cache/dnd-state"
 
 if [ -f "$DND_FILE" ]; then
-    echo "󰂛"
+    echo '{"text": "󰂛", "class": "dnd"}'
 else
-    echo "󰂚"
+    echo '{"text": "󰂚", "class": "normal"}'
 fi
 

@@ -15,7 +15,19 @@ window#waybar {
 
 #workspaces,
 #window,
-#cpu,
+#clock,
+#mpris,
+#custom-notifications {
+    background: transparent;
+    padding: 0 10px;
+}
+
+#cpu {
+    background: transparent;
+    padding: 0 10px;
+    font-size: 16px;
+}
+
 #temperature,
 #memory,
 #disk,
@@ -23,15 +35,34 @@ window#waybar {
 #pulseaudio,
 #network,
 #bluetooth,
-#clock,
-#mpris,
 #custom-gpu,
-#custom-kdeconnect,
-#custom-caffeine,
-#custom-dnd,
-#custom-notifications {
+#custom-kdeconnect {
     background: transparent;
     padding: 0 10px;
+    border-left: 1px solid rgba(162, 182, 201, 0.2);
+    margin-left: 4px;
+    margin-top: 8px;
+    margin-bottom: 8px;
+    font-size: 16px;
+}
+
+#custom-caffeine,
+#custom-focus-mode,
+#custom-dnd,
+#custom-screen-record,
+#custom-mic-indicator,
+#custom-mic-muted {
+    background: transparent;
+    padding: 0 10px;
+    font-size: 16px;
+}
+
+#custom-caffeine,
+#custom-focus-mode {
+    border-right: 1px solid rgba(162, 182, 201, 0.2);
+    margin-right: 4px;
+    margin-top: 8px;
+    margin-bottom: 8px;
 }
 
 #workspaces {
@@ -105,7 +136,8 @@ window#waybar {
 }
 
 #pulseaudio.muted {
-    color: #d99a9a;
+    color: #ff4d4d;
+    font-weight: 600;
 }
 
 #network {
@@ -195,6 +227,11 @@ tooltip {
     font-weight: 400;
 }
 
+#custom-notifications.dnd {
+    color: #ff4d4d;
+    font-weight: 600;
+}
+
 #custom-notifications:hover {
     color: #ffffff;
 }
@@ -207,5 +244,5 @@ tooltip {
 #custom-focus-mode {
     color: #c9a0dc;
     font-weight: 500;
-     padding: 0 8px;
+     padding: 0 15px;
 }

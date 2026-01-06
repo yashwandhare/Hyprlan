@@ -19,12 +19,9 @@
     "cpu",
     "temperature",
     "memory",
-    "custom/gpu",
-    "custom/clipboard",
     "pulseaudio",
     "network",
     "bluetooth",
-    "custom/kdeconnect",
     "battery"
   ],
 
@@ -71,7 +68,7 @@
 
   "pulseaudio": {
     "format": "{icon} {volume}%",
-    "format-muted": "󰝟 MUTE",
+    "format-muted": "󰝟 M",
     "format-icons": {
       "headphone": "󰋋",
       "hands-free": "󰋎",
@@ -142,7 +139,7 @@
 
   "clock": {
     "format": "{:%H:%M}",
-    "format-alt": "{:%d %b %Y}",
+    "format-alt": "{:%A, %d %b %Y}",
     "tooltip-format": "<tt><small>{calendar}</small></tt>",
     "calendar": {
       "mode": "year",
@@ -215,6 +212,7 @@
     "exec": "~/.config/hyprland/waybar/scripts/notifications-icon.sh",
     "format": "{}",
     "interval": 2,
+    "return-type": "json",
     "tooltip": "Notifications",
     "on-click": "~/.config/hyprland/waybar/scripts/notifications-menu.sh"
   },
