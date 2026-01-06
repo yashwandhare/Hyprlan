@@ -1,20 +1,28 @@
 #!/usr/bin/env bash
 
+# -----------------------------------------------------
+# Notification History (Rofi)
+# -----------------------------------------------------
+
 LOG_FILE="$HOME/.cache/notification_log.txt"
+ROFI_THEME="$HOME/.config/hypr/rofi/launcher.rasi"
 touch "$LOG_FILE"
 
 # 1. Build Menu
-OPTIONS="🗑️  Clear All\n📋  Copy Last"
+# Note: Rofi handles newlines differently, so we list actions first
 if [ -s "$LOG_FILE" ]; then
-    # Show last 20 notifications
-    HISTORY=$(tac "$LOG_FILE" | head -n 20)
-    MENU="$OPTIONS\n────────────────\n$HISTORY"
+    HISTORY=$(tac "$LOG_FILE" | head -n 30)
+    # Using printf to separate actions from history cleanly
+    MENU="🗑️  Clear All\n📋  Copy Last\n────────────────\n$HISTORY"
 else
-    MENU="$OPTIONS\n────────────────\nNo notifications"
+    MENU="🗑️  Clear All\n📋  Copy Last\n────────────────\nNo notifications"
 fi
 
-# 2. Show Wofi
-SELECTED=$(echo -e "$MENU" | wofi --dmenu --prompt "Notifications" --width=500 --height=400 --cache-file /dev/null)
+# 2. Show Rofi
+SELECTED=$(echo -e "$MENU" | rofi -dmenu \
+    -p "Notifications" \
+    -theme "$ROFI_THEME" \
+    -markup-rows)
 
 # 3. Handle Actions
 case "$SELECTED" in
@@ -31,9 +39,9 @@ case "$SELECTED" in
         ;;
     *)
         # Copy selected line if clicked
-        if [ -n "$SELECTED" ] && [ "$SELECTED" != "────────────────" ] && [ "$SELECTED" != "No notifications" ]; then
+        if [ -n "$SELECTED" ] && [[ "$SELECTED" != *"────────────────"* ]] && [[ "$SELECTED" != "No notifications" ]]; then
             echo "$SELECTED" | wl-copy
-            notify-send "Notifications" "Copied: $SELECTED" -u low
+            notify-send "Notifications" "Copied to clipboard" -u low
         fi
         ;;
 esac

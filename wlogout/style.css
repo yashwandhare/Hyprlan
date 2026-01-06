@@ -1,45 +1,55 @@
+/* -----------------------------------------------------
+ * General
+ * ----------------------------------------------------- */
 * {
     background-image: none;
     box-shadow: none;
+    font-family: "JetBrains Mono Nerd Font", "JetBrains Mono", sans-serif;
+    font-size: 16px;
+    font-weight: normal; /* No Bold */
 }
 
 window {
-    background-color: rgba(20, 20, 20, 0.92);
+    background-color: rgba(20, 20, 20, 0.85);
 }
 
+/* -----------------------------------------------------
+ * Buttons
+ * ----------------------------------------------------- */
 button {
-    font-family: "JetBrains Mono Nerd Font", "JetBrains Mono";
-    font-size: 14px;
-    border-radius: 0; /* Square corners */
+    background-color: #1e1e1e;
+    color: #E3E6E8;
     
-    /* Colors */
-    color: #E3E6E8; /* Soft Off-White */
-    background-color: #1e1e1e; /* Matches Wofi Input BG */
-    border: 1px solid rgba(162, 182, 201, 0.2); /* Faint Blue Separator */
+    border: 1px solid rgba(162, 182, 201, 0.2);
+    border-radius: 0px;
     
-    /* Layout */
-    min-width: 260px;
-    margin: 5px; /* Separation between buttons */
-    padding: 10px 10px 10px 60px; /* Left padding makes room for icon */
+    margin: 10px;
     
-    /* Icon Positioning */
+    /* Icon Layout */
     background-repeat: no-repeat;
-    background-position: 240px center; /* Icon fixed to left side */
-    background-size: 55px; /* Clean icon size */
+    background-position: 230px center; /* Icon on the left */
+    background-size: 45px;            /* Icon size */
+    padding-left: 50px;               /* Space for text to sit next to icon */
     
-    text-decoration: none;
+    transition: all 0.2s ease-in-out;
+}
+
+/* -----------------------------------------------------
+ * Hover / Active States
+ * ----------------------------------------------------- */
+button:focus, 
+button:active, 
+button:hover {
+    background-color: rgba(162, 182, 201, 0.15);
+    color: #A2B6C9;
+    border: 1px solid #A2B6C9;
     outline-style: none;
-    transition: all 0.2s ease;
 }
 
-/* Hover / Active States */
-button:focus, button:active, button:hover {
-    color: #A2B6C9; /* Pastel Steel Blue */
-    background-color: rgba(162, 182, 201, 0.1); /* Faint Blue Tint */
-    border: 1px solid #A2B6C9; /* Accent Border */
-}
-
-/* Icon Mappings */
+/* -----------------------------------------------------
+ * PNG Icon Mappings
+ * Ensure files exist in ~/.config/wlogout/icons/
+ * ----------------------------------------------------- */
 #lock {
     background-image: image(url("icons/lock.png"));
 }
@@ -48,16 +58,18 @@ button:focus, button:active, button:hover {
     background-image: image(url("icons/logout.png"));
 }
 
+#suspend {
+    background-image: image(url("icons/pause.png"));
+}
+
+#hibernate {
+    background-image: image(url("icons/hibernate.png"));
+}
+
 #reboot {
     background-image: image(url("icons/reboot.png"));
 }
 
 #shutdown {
     background-image: image(url("icons/shutdown.png"));
-}
-#hibernate{
-    background-image: image(url("icons/hibernate.png"));
-}
-#suspend{
-    background-image: image(url("icons/pause.png"));
 }

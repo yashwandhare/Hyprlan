@@ -22,7 +22,7 @@ window {
     height: 55%;           /* Balanced for 2 rows + input */
     location: center;
     anchor: center;
-    background-color: rgba(20, 20, 20, 0.90);
+    background-color: rgba(20, 20, 20, 0.85);
     border: 2px;
     border-color: #A2B6C9;
 }

@@ -1,0 +1,147 @@
+/*******************************************************
+ * ROFI ELITE LAUNCHER - MINIMAL EDITION
+ * Clean | Sharp | Text-Focused
+ *******************************************************/
+
+configuration {
+    modi:                       "drun,run,window";
+    show-icons:                 true;
+    icon-theme:                 "Colloid-Grey-Catppuccin-Dark";
+    display-drun:               "";
+    display-run:                "";
+    display-window:             "";
+    drun-display-format:        "{name}";
+    window-format:              "{w} · {c} · {t}";
+    matching:                   "fuzzy";
+    scroll-method:              0;
+    hover-select:               true;
+    me-select-entry:            "";
+    me-accept-entry:            "MousePrimary";
+    click-to-exit:              true;
+    /* 1. Prioritize Exact Matches */
+    sort: true;
+    sorting-method: "fzf";  
+    /* "fzf" or "levenshtein" - fzf is smarter */
+
+    /* 2. Stop frequent apps from hijacking search */
+    disable-history: true;
+
+    /* 3. Search ONLY the Name (Ignore generic descriptions) */
+    /* This fixes random apps appearing because they have "file" in their description */
+    drun-match-fields: "name,generic,exec,categories";
+    
+    /* 4. Matching Style */
+    matching: "fuzzy"; 
+    tokenize: true;
+}
+
+/*******************************************************
+ * COLORS & FONTS
+ *******************************************************/
+* {
+    font:                        "JetBrains Mono Nerd Font 12";
+    
+    /* Core Palette */
+    bg:                          rgba(20, 20, 20, 0.85);
+    fg:                          #E3E6E8;
+    accent:                      #A2B6C9;
+    accent-dim:                  rgba(162, 182, 201, 0.15);
+    
+    background-color:            transparent;
+    text-color:                  @fg;
+    
+    margin:                      0px;
+    padding:                     0px;
+    border-radius:               0px;
+}
+
+/*******************************************************
+ * WINDOW
+ *******************************************************/
+window {
+    location:                    center;
+    anchor:                      center;
+    width:                       30%;
+    height:                      40%;
+    
+    background-color:            @bg;
+    border:                      1px;
+    border-color:                @accent;
+}
+
+/*******************************************************
+ * MAIN LAYOUT
+ *******************************************************/
+mainbox {
+    padding:                     20px;
+    spacing:                     15px;
+    children:                    [ "inputbar", "listview" ];
+}
+
+/*******************************************************
+ * INPUT BAR (Minimal - No Box)
+ *******************************************************/
+inputbar {
+    children:                    [ "prompt", "entry" ];
+    spacing:                     15px;
+    padding:                     0px 0px 10px 0px;
+    border:                      0px 0px 1px 0px;
+    border-color:                rgba(162, 182, 201, 0.2);
+}
+
+prompt {
+    text-color:                  @accent;
+    font:                        "JetBrains Mono Nerd Font Bold 12";
+}
+
+entry {
+    placeholder:                 "Search...";
+    placeholder-color:           rgba(227, 230, 232, 0.4);
+    cursor:                      text;
+}
+
+/*******************************************************
+ * LIST VIEW
+ *******************************************************/
+listview {
+    columns:                     1;
+    lines:                       7;
+    spacing:                     5px;
+    scrollbar:                   false;
+    layout:                      vertical;
+    fixed-height:                false;
+}
+
+/*******************************************************
+ * ELEMENTS
+ *******************************************************/
+element {
+    orientation:                 horizontal;
+    padding:                     8px 10px;
+    spacing:                     10px;
+    cursor:                      pointer;
+}
+
+element selected.normal {
+    background-color:            @accent-dim;
+    text-color:                  @accent;
+    /* The Elite Sharp Left Accent */
+    border:                      0px 0px 0px 3px;
+    border-color:                @accent;
+}
+
+element-icon {
+    size:                        24px;
+    cursor:                      inherit;
+}
+
+element-text {
+    vertical-align:              0.5;
+    highlight:                   bold;
+    cursor:                      inherit;
+}
+
+/* Hide clutter */
+mode-switcher, message {
+    enabled:                     false;
+}

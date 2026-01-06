@@ -30,6 +30,7 @@
     "temperature",
     "memory",
     "custom/gpu",
+    "pulseaudio",
     "network",
     "bluetooth",
     "custom/kdeconnect",
