@@ -3,7 +3,7 @@
 FOCUS_FILE="$HOME/.cache/focus-mode-state"
 
 if [ -f "$FOCUS_FILE" ]; then
-    echo '{"text": "󰽥", "tooltip": "Focus Mode Active", "class": "enabled"}'
+    echo '{"text": "󰽥", "tooltip": "Focus Mode: Active", "class": "active"}'
 else
-    echo ''
+    echo '{"text": "", "tooltip": "", "class": ""}'
 fi

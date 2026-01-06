@@ -1,12 +1,23 @@
+mode=drun
 show=drun
-prompt=
-allow_images=true
-image_size=32
-columns=1
-lines=10
-width=450
+prompt=Search...
+width=500
+height=350
 location=center
+columns=1
+lines=8
+
+# Images
+allow_images=true
+image_size=24
+
+# Behavior
 no_actions=true
-hide_scroll=false
+hide_scroll=true
 matching=fuzzy
 insensitive=true
+filter_rate=100
+layer=top
+
+# Colors (Fallback)
+gtk_dark=true

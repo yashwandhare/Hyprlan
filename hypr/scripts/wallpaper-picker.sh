@@ -1,60 +1,86 @@
 #!/usr/bin/env bash
 
+# -----------------------------------------------------
+# CONFIGURATION
+# -----------------------------------------------------
 WALLDIR="${WALLPAPER_DIR:-$HOME/Downloads/walls}"
 CACHE_DIR="$HOME/.cache/wallpicker"
 CACHE_LIST="$CACHE_DIR/list.txt"
 STATE="$HOME/.cache/current_wallpaper"
-ROFI_THEME="$HOME/.config/hypr/rofi/wallpaper.rasi"
+ROFI_THEME="$HOME/.config/hyprland/hypr/rofi/wallpaper.rasi"
 
-THUMBNAIL_WIDTH=480
-THUMBNAIL_HEIGHT=270
+# Thumbnail Settings (High quality for 5x2 grid)
+THUMBNAIL_WIDTH=400
+THUMBNAIL_HEIGHT=250
+
+# SWWW Transition - "Cinematic Fade"
 TRANSITION_TYPE="fade"
-TRANSITION_DURATION="0.8"
+TRANSITION_DURATION="2.5"
+TRANSITION_FPS="60"
+TRANSITION_BEZIER=".43,1.19,1,.4"
+
+# -----------------------------------------------------
+# CHECKS
+# -----------------------------------------------------
+if [ ! -d "$WALLDIR" ]; then
+    notify-send "Wallpaper Picker" "Directory $WALLDIR not found!" -u critical
+    exit 1
+fi
 
 mkdir -p "$CACHE_DIR"
 
-command -v rofi >/dev/null || exit 1
-command -v swww >/dev/null || exit 1
-command -v magick >/dev/null || exit 1
+if ! pgrep -x swww-daemon >/dev/null; then
+    swww-daemon & disown
+    sleep 0.5
+fi
 
-pgrep -x swww-daemon >/dev/null || swww-daemon & disown
-
-if [ ! -f "$CACHE_LIST" ] || [ "$(find "$CACHE_LIST" -mmin +0.5 2>/dev/null)" ]; then
+# -----------------------------------------------------
+# CACHE GENERATION
+# -----------------------------------------------------
+if [ ! -f "$CACHE_LIST" ] || [ "$(find "$WALLDIR" -mmin -1 2>/dev/null)" ]; then
     find "$WALLDIR" -type f \( -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.png" -o -iname "*.webp" \) \
         -printf "%T@ %p\n" 2>/dev/null | sort -rn | cut -d' ' -f2- > "$CACHE_LIST"
 fi
 
+# Parallel Thumbnail Generation
 (
-    grep -v '^$' "$CACHE_LIST" | while read -r img; do
+    while read -r img; do
         thumb="$CACHE_DIR/$(basename "$img")"
-        [ -f "$thumb" ] && continue
-        echo "$img|$thumb"
-    done | xargs -P 4 -I {} sh -c '
+        if [ ! -f "$thumb" ]; then
+            echo "$img|$thumb"
+        fi
+    done < "$CACHE_LIST" | xargs -P 4 -I {} sh -c '
         img="${1%%|*}"
         thumb="${1##*|}"
-        magick "$img" -resize "'${THUMBNAIL_WIDTH}'x'${THUMBNAIL_HEIGHT}'^" \
-            -gravity center -extent "'${THUMBNAIL_WIDTH}'x'${THUMBNAIL_HEIGHT}'" \
-            -quality 85 "$thumb" 2>/dev/null
+        magick "$img" -resize 400x250^ -gravity center -extent 400x250 "$thumb" 2>/dev/null
     ' _ {}
 ) & disown
 
+# -----------------------------------------------------
+# ROFI MENU
+# -----------------------------------------------------
 selected="$(
-while read -r img; do
-    thumb="$CACHE_DIR/$(basename "$img")"
-    [ -f "$thumb" ] || continue
-    printf "%s\0icon\x1f%s\n" "$(basename "$img")" "$thumb"
-done < "$CACHE_LIST" | rofi -dmenu -no-custom -matching fuzzy -theme "$ROFI_THEME" -p "Wallpaper"
+    while read -r img; do
+        thumb="$CACHE_DIR/$(basename "$img")"
+        [ -f "$thumb" ] || thumb="$img"
+        printf "%s\0icon\x1f%s\n" "$(basename "$img")" "$thumb"
+    done < "$CACHE_LIST" | rofi -dmenu -no-custom -matching fuzzy -theme "$ROFI_THEME" -p "Select Wallpaper"
 )"
 
-[ -z "$selected" ] && exit 0
-
-wall="$WALLDIR/$selected"
-[ -f "$wall" ] || exit 0
-
-(
-swww img "$wall" \
-    --transition-type "$TRANSITION_TYPE" \
-    --transition-duration "$TRANSITION_DURATION" \
-    --transition-fps 60
-ln -sfn "$wall" "$STATE"
-) & disown
+# -----------------------------------------------------
+# APPLY WALLPAPER
+# -----------------------------------------------------
+if [ -n "$selected" ]; then
+    wall="$WALLDIR/$selected"
+    
+    if [ -f "$wall" ]; then
+        swww img "$wall" \
+            --transition-type "$TRANSITION_TYPE" \
+            --transition-duration "$TRANSITION_DURATION" \
+            --transition-fps "$TRANSITION_FPS" \
+            --transition-bezier "$TRANSITION_BEZIER"
+            
+        ln -sf "$wall" "$STATE"
+        notify-send "Wallpaper" "Applied: $(basename "$selected")" -i "$wall"
+    fi
+fi

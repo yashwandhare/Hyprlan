@@ -1,34 +1,35 @@
 #!/usr/bin/env bash
 
-STATE_FILE="$HOME/.cache/caffeine-state"
+# -----------------------------------------------------
+# Toggle Caffeine Mode (Manual)
+# -----------------------------------------------------
+
+CACHE_DIR="$HOME/.cache"
+STATE_FILE="$CACHE_DIR/caffeine-state"
 
 if [ -f "$STATE_FILE" ]; then
-    # Caffeine is on, turn it off
-    rm "$STATE_FILE"
-    systemctl --user kill -s SIGUSR1 hypridle.service 2>/dev/null
+    # -------------------------------------------------
+    # TURN OFF
+    # -------------------------------------------------
+    rm -f "$STATE_FILE"
+    
+    # Restart idle daemon
     systemctl --user start hypridle.service 2>/dev/null
-    notify-send "Caffeine" "Caffeine Disabled" -u normal
     
-    # Verify it actually stopped
-    if systemctl --user is-active --quiet hypridle.service; then
-        : # Success, do nothing
-    else
-        notify-send "Caffeine Error" "Failed to re-enable idle" -u critical
-    fi
+    # Icon: Sleep/Suspend symbol (Standard)
+    notify-send "Caffeine" "Disabled" -u low -i system-suspend
 else
-    # Caffeine is off, turn it on
+    # -------------------------------------------------
+    # TURN ON
+    # -------------------------------------------------
     touch "$STATE_FILE"
-    systemctl --user kill -s SIGUSR2 hypridle.service 2>/dev/null
-    systemctl --user stop hypridle.service 2>/dev/null
-    notify-send "Caffeine" "Caffeine Enabled" -u normal
     
-    # Verify it actually stopped
-    if ! systemctl --user is-active --quiet hypridle.service; then
-        : # Success, do nothing
-    else
-        notify-send "Caffeine Error" "Failed to disable idle" -u critical
-    fi
+    # Stop idle daemon
+    systemctl --user stop hypridle.service 2>/dev/null
+    
+    # Icon: Display brightness/Video symbol (Standard for 'Always On')
+    notify-send "Caffeine" "Enabled" -u low -i video-display
 fi
 
-# Refresh waybar
+# Refresh Waybar Indicator
 pkill -RTMIN+8 waybar 2>/dev/null

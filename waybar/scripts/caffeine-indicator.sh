@@ -3,9 +3,9 @@
 STATE_FILE="$HOME/.cache/caffeine-state"
 FOCUS_FILE="$HOME/.cache/focus-mode-state"
 
-# Only show caffeine icon if caffeine is enabled AND focus mode is NOT active
+# Only show if enabled AND Focus Mode is NOT active
 if [ -f "$STATE_FILE" ] && [ ! -f "$FOCUS_FILE" ]; then
-    echo '{"text": "", "tooltip": "Caffeine Enabled", "class": "enabled"}'
+    echo '{"text": "", "tooltip": "Caffeine: Enabled", "class": "active"}'
 else
-    echo ''
+    echo '{"text": "", "tooltip": "", "class": ""}'
 fi

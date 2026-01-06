@@ -1,45 +1,42 @@
 #!/usr/bin/env bash
 
-# OCR from screenshot - requires tesseract and grim/slurp
+# -----------------------------------------------------
+# OCR Screenshot (Grim + Slurp + Tesseract)
+# -----------------------------------------------------
 
-# Check dependencies
-if ! command -v tesseract &>/dev/null; then
-    notify-send "OCR Error" "tesseract not installed" -u critical
-    exit 1
-fi
+# Dependency Check
+for cmd in tesseract grim slurp wl-copy; do
+    if ! command -v $cmd &>/dev/null; then
+        notify-send "OCR Error" "$cmd not installed" -u critical
+        exit 1
+    fi
+done
 
-if ! command -v grim &>/dev/null || ! command -v slurp &>/dev/null; then
-    notify-send "OCR Error" "grim/slurp not installed" -u critical
-    exit 1
-fi
+# Create safe temp files
+IMG_FILE=$(mktemp /tmp/ocr-XXXXX.png)
+TXT_FILE=$(mktemp /tmp/ocr-XXXXX)
 
-# Create temp directory
-TEMP_DIR="/tmp/hypr-ocr"
-mkdir -p "$TEMP_DIR"
-IMG_FILE="$TEMP_DIR/screenshot.png"
-TXT_FILE="$TEMP_DIR/text.txt"
-
-# Take screenshot of selected area
-grim -g "$(slurp)" "$IMG_FILE" 2>/dev/null || {
-    notify-send "OCR" "Screenshot cancelled" -t 1000
+# 1. Capture Region
+if ! grim -g "$(slurp)" "$IMG_FILE"; then
+    rm -f "$IMG_FILE" "$TXT_FILE"
     exit 0
-}
+fi
 
-# Run OCR
-tesseract "$IMG_FILE" "${TXT_FILE%.txt}" 2>/dev/null
+# 2. Run Tesseract (OCR)
+# -l eng = English (add others if needed, e.g. -l eng+deu)
+tesseract "$IMG_FILE" "$TXT_FILE" &>/dev/null
 
-if [ -f "$TXT_FILE" ] && [ -s "$TXT_FILE" ]; then
-    # Copy to clipboard
-    wl-copy < "$TXT_FILE"
+# 3. Process Result
+if [ -s "${TXT_FILE}.txt" ]; then
+    # Clean up whitespace and copy
+    cat "${TXT_FILE}.txt" | tr -s ' \n' ' ' | wl-copy
     
-    # Get first line for notification preview
-    PREVIEW=$(head -n1 "$TXT_FILE" | cut -c1-50)
-    [ ${#PREVIEW} -eq 50 ] && PREVIEW="${PREVIEW}..."
-    
-    notify-send "OCR Success" "Text copied to clipboard\n${PREVIEW}" -t 3000
+    # Generate Preview (First 60 chars)
+    PREVIEW=$(head -c 60 "${TXT_FILE}.txt")
+    notify-send "OCR Copied" "\"${PREVIEW}...\"" -i scanner-symbolic -t 3000
 else
-    notify-send "OCR Failed" "No text detected" -u normal -t 2000
+    notify-send "OCR Failed" "No text detected." -u low -i dialog-warning
 fi
 
 # Cleanup
-rm -f "$IMG_FILE" "$TXT_FILE"
+rm -f "$IMG_FILE" "$TXT_FILE" "${TXT_FILE}.txt"

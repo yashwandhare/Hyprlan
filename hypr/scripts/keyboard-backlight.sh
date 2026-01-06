@@ -1,32 +1,52 @@
 #!/usr/bin/env bash
 
-# Auto-detect keyboard backlight device
-DEVICE=""
-for dev in /sys/class/leds/*::kbd_backlight /sys/class/leds/*kbd_backlight*; do
-    if [[ -d "$dev" ]]; then
-        DEVICE="$dev"
-        break
+# -----------------------------------------------------
+# Keyboard Backlight Control (Cycle & OSD)
+# -----------------------------------------------------
+
+# 1. Action (up/down/cycle)
+ACTION="$1"
+
+# 2. Get Device (Auto-detect)
+DEVICE=$(find /sys/class/leds -name "*::kbd_backlight" | head -n1)
+if [ -z "$DEVICE" ]; then
+    DEVICE=$(find /sys/class/leds -name "*kbd_backlight*" | head -n1)
+fi
+
+[ -z "$DEVICE" ] && exit 0
+
+# Helper to get current %
+get_percent() {
+    local cur=$(brightnessctl --device='*::kbd_backlight' get)
+    local max=$(brightnessctl --device='*::kbd_backlight' max)
+    echo $((cur * 100 / max))
+}
+
+# 3. Apply Change
+if [ -n "$ACTION" ]; then
+    CURRENT=$(get_percent)
+    
+    if [ "$ACTION" == "up" ]; then
+        brightnessctl --device='*::kbd_backlight' set +33%
+    elif [ "$ACTION" == "down" ]; then
+        brightnessctl --device='*::kbd_backlight' set 33%-
+    elif [ "$ACTION" == "cycle" ]; then
+        # Cycle: Off -> Med -> High -> Off
+        if [ "$CURRENT" -ge 95 ]; then
+            brightnessctl --device='*::kbd_backlight' set 0
+        elif [ "$CURRENT" -ge 45 ]; then
+            brightnessctl --device='*::kbd_backlight' set 100%
+        else
+            brightnessctl --device='*::kbd_backlight' set 50%
+        fi
     fi
-done
-
-# Fallback to common ASUS path if not found
-if [[ -z "$DEVICE" ]]; then
-DEVICE="/sys/class/leds/asus::kbd_backlight"
 fi
 
-if [[ ! -d "$DEVICE" ]] || [[ ! -f "$DEVICE/brightness" ]] || [[ ! -f "$DEVICE/max_brightness" ]]; then
-    exit 1
-fi
-
-MAX_BRIGHT=$(cat "$DEVICE/max_brightness" 2>/dev/null)
-CURRENT=$(cat "$DEVICE/brightness" 2>/dev/null)
-
-# Validate values
-if [[ -z "$MAX_BRIGHT" ]] || [[ -z "$CURRENT" ]] || [[ "$MAX_BRIGHT" -eq 0 ]]; then
-    exit 1
-fi
-
-# Calculate percentage
-PERCENT=$((CURRENT * 100 / MAX_BRIGHT))
-
-notify-send "Keyboard Backlight" "Level: ${PERCENT}%"
+# 4. Notify New State
+NEW_PERCENT=$(get_percent)
+notify-send "Keyboard" "${NEW_PERCENT}%" \
+    -t 800 \
+    -u low \
+    -i keyboard-brightness-symbolic \
+    -h string:x-dunst-stack-tag:kbd_backlight \
+    -h int:value:"$NEW_PERCENT"

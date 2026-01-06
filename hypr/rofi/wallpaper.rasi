@@ -4,47 +4,47 @@ configuration {
     cycle: false;
     disable-history: true;
     click-to-exit: true;
-    matching: "normal";
+    matching: "fuzzy";
     sort: false;
 }
 
 * {
     background-color: transparent;
     text-color: #E3E6E8;
-    font: "JetBrains Mono Nerd Font 13";
+    font: "JetBrains Mono Nerd Font 12";
     border-radius: 0px;
     margin: 0px;
     padding: 0px;
 }
 
 window {
-    width: 50%;
-    height: 48%;
+    width: 60%;            /* Wide enough for 5 columns */
+    height: 55%;           /* Balanced for 2 rows + input */
     location: center;
     anchor: center;
-    background-color: rgba(20, 20, 20, 0.92);
-    border: 1px;
-    border-color: rgba(162, 182, 201, 0.2); 
+    background-color: rgba(20, 20, 20, 0.90);
+    border: 2px;
+    border-color: #A2B6C9;
 }
 
 mainbox {
-    padding: 12px;
-    spacing: 6px;
+    padding: 20px;
+    spacing: 15px;
     children: [ inputbar, listview ];
 }
 
 inputbar {
     children: [ prompt, entry ];
     spacing: 10px;
-    padding: 10px 15px;
+    padding: 12px 16px;
     background-color: #1e1e1e;
     border: 1px;
-    border-color: rgba(162, 182, 201, 0.2);
+    border-color: #45475a;
 }
 
 prompt {
-    text-color: #A2B6C9; 
-    font: "JetBrains Mono Nerd Font Bold 13";
+    text-color: #A2B6C9;
+    font: "JetBrains Mono Nerd Font Bold 12";
 }
 
 entry {
@@ -55,41 +55,38 @@ entry {
 }
 
 listview {
-    columns: 5;
-    lines: 3;
-    spacing: 8px;
-    fixed-height: true;
-    fixed-columns: true;
-    fixed-lines: true;
-    padding: 3px;
+    columns: 5;            /* 5 items across */
+    lines: 2;              /* 2 rows down */
+    spacing: 15px;
+    fixed-height: false;
+    padding: 10px;
     scroll-method: 1;
-    dynamic: false;
-    reverse: false;
-    require-input: false;
 }
 
 scrollbar {
     width: 4px;
-    handle-color: #A2B6C9; 
+    handle-color: #A2B6C9;
     handle-width: 4px;
     background-color: #1e1e1e;
 }
+
 element {
     orientation: vertical;
-    padding: 6px;
+    padding: 10px;
+    spacing: 5px;
     background-color: transparent;
     border: 1px;
     border-color: transparent;
 }
 
 element selected.normal {
-    background-color: rgba(162, 182, 201, 0.1); 
-    border-color: #A2B6C9; 
+    background-color: rgba(162, 182, 201, 0.15);
+    border-color: #A2B6C9;
     text-color: #A2B6C9;
 }
 
 element-icon {
-    size: 150px;
+    size: 165px;           /* Large, clear thumbnails */
     horizontal-align: 0.5;
     cursor: inherit;
 }
@@ -98,10 +95,10 @@ element-text {
     margin: 8px 0 0 0;
     horizontal-align: 0.5;
     text-color: inherit;
-    font: "JetBrains Mono Nerd Font 10";
+    font: "JetBrains Mono Nerd Font Medium 10";
 }
 
 element selected.normal element-text {
     text-color: #A2B6C9;
-    font: "JetBrains Mono Nerd Font Bold 11";
+    font: "JetBrains Mono Nerd Font Bold 10";
 }

@@ -1,18 +1,27 @@
 #!/usr/bin/env bash
 
-# Disable caffeine when locking, logging out, or shutting down
+# -----------------------------------------------------
+# Cleanup Script: Run on Lock/Logout
+# -----------------------------------------------------
 
-STATE_FILE="$HOME/.cache/caffeine-state"
-AUTO_STATE_FILE="$HOME/.cache/caffeine-auto-state"
+CACHE_DIR="$HOME/.cache"
+FILES=(
+    "$CACHE_DIR/caffeine-state"
+    "$CACHE_DIR/caffeine-auto-state"
+    "$CACHE_DIR/focus-mode-state"
+)
 
-if [ -f "$STATE_FILE" ]; then
-    rm "$STATE_FILE"
-fi
+# 1. Remove all state flags
+for file in "${FILES[@]}"; do
+    if [ -f "$file" ]; then
+        rm -f "$file"
+    fi
+done
 
-if [ -f "$AUTO_STATE_FILE" ]; then
-    rm "$AUTO_STATE_FILE"
-fi
-
-pkill -SIGUSR1 hypridle 2>/dev/null
+# 2. Force Idle Daemon ON
+# (Ensure screen can turn off physically after locking)
 systemctl --user start hypridle.service 2>/dev/null
-pkill -RTMIN+8 waybar 2>/dev/null
+
+# 3. Refresh Waybar (Reset indicators)
+pkill -RTMIN+8 waybar 2>/dev/null # Caffeine
+pkill -RTMIN+9 waybar 2>/dev/null # Focus Mode

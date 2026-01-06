@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
 
-# Check if required commands are available
-command -v cliphist &>/dev/null || exit 1
-command -v wofi &>/dev/null || exit 1
-command -v wl-copy &>/dev/null || exit 1
+# Check dependencies
+if ! command -v cliphist &>/dev/null; then
+    notify-send "Error" "cliphist not installed"
+    exit 1
+fi
 
-cliphist list | wofi --show dmenu | cliphist decode | wl-copy
+cliphist list | wofi --show dmenu --prompt "Clipboard" --width=600 --height=400 | cliphist decode | wl-copy
