@@ -39,7 +39,7 @@ This is a fully customized **Hyprland** wayland compositor setup with:
 
 - **Window Manager**: Hyprland (Wayland-native, GPU accelerated)
 - **Status Bar**: Waybar with custom modules
-- **Application Launcher**: Wofi with fuzzy search
+- **Application Launcher**: Rofi with fuzzy search
 - **Lock Screen**: Hyprlock with custom styling
 - **Idle Management**: Hypridle with 5/10 min auto-lock
 - **Theme**: Dark theme with pastel steel blue accents (#A2B6C9)
@@ -96,9 +96,9 @@ This is a fully customized **Hyprland** wayland compositor setup with:
 │       ├── notifications-icon.sh      # Notification icon display
 │       ├── notifications-menu.sh      # Notification menu
 │       └── screen-record.sh           # Screen recording indicator
-├── wofi/
-│   ├── config                         # Wofi launcher config
-│   └── style.css                      # Wofi styling
+├── rofi/
+│   ├── launcher.rasi                  # Rofi launcher theme
+│   └── wallpaper.rasi                # Rofi wallpaper theme
 ├── wlogout/
 │   ├── layout.json                    # Logout menu layout
 │   ├── style.css                      # Logout menu styling
@@ -251,7 +251,7 @@ All keybindings use `SUPER` (Windows/Cmd key) as the main modifier.
 | `Super + Return` | `kitty` | Open terminal |
 | `Super + B` | `zen-browser` | Open web browser |
 | `Super + period` | `nautilus` | Open file manager |
-| `Ctrl + Space` | `wofi --show drun` | Application launcher |
+| `Ctrl + Space` | `rofi -show drun` | Application launcher |
 | `Super + W` | wallpaper-picker.sh | Interactive wallpaper picker |
 | `Super + I` | control-panel-enhanced.sh | Settings panel with Focus Mode |
 
@@ -320,7 +320,7 @@ All keybindings use `SUPER` (Windows/Cmd key) as the main modifier.
 | `Super + L` | hyprlock | Lock screen immediately |
 | `Super + Escape` | wlogout | Open logout menu |
 | `Super + Shift + Escape` | exit | Exit Hyprland |
-| `Super + Shift + V` | Clipboard menu | Show clipboard history (wofi) |
+| `Super + Shift + V` | Clipboard menu | Show clipboard history (rofi) |
 | `Super + E` | rofimoji | Open emoji picker |
 | `Super + C` | hyprpicker | Color picker |
 | `Super + Shift + T` | ocr-screenshot.sh | OCR from selected area |
@@ -516,7 +516,7 @@ Automatically pauses all media players when screen locks using `playerctl`.
 **Features**:
 - Managed by `cliphist`
 - Both text and image history
-- Wofi menu to browse/restore
+- Rofi menu to browse/restore
 - Right-click to wipe history
 
 **Keybind**: `Super + Shift + V` (show menu)
@@ -700,7 +700,7 @@ The setup uses a **dark theme with pastel blue accents**:
 - Waybar: 15px (base), 16px (modules)
 - Lock screen clock: 100px
 - Lock screen date: 18px
-- Wofi/Rofi: 15px
+- Rofi: 15px
 - Wlogout: 14px
 
 **Font Weights**:
@@ -744,7 +744,7 @@ Duration: 1s for windows, layers, workspaces
 ### Opacity & Transparency
 
 - **Waybar**: rgba(20, 20, 20, 0.92) - 92% opaque dark background
-- **Wofi/Wlogout**: rgba(20, 20, 20, 0.92) - Consistent styling
+- **Rofi/Wlogout**: rgba(20, 20, 20, 0.92) - Consistent styling
 - **Window Shadow**: rgba(0, 0, 0, 0.4) - 40% black shadow
 - **Blur passes**: 2-3 passes for smooth effect
 
@@ -761,7 +761,7 @@ Duration: 1s for windows, layers, workspaces
 
 ### Panel & Launchers
 - `waybar` - Status bar
-- `wofi` - Application launcher
+- `rofi` - Application launcher
 - `rofi` - Application/menu launcher
 - `wlogout` - Logout menu
 
@@ -1010,7 +1010,8 @@ systemctl --user start hypridle.service
 Edit color values in:
 - `hypr/hyprland.conf` - Border colors
 - `waybar/style.css` - Module colors
-- `wofi/style.css` - Launcher styling
+- `rofi/launcher.rasi` - Launcher theme
+- `rofi/wallpaper.rasi` - Wallpaper picker theme
 - `wlogout/style.css` - Logout menu
 
 ### Modify Keybindings

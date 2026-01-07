@@ -1,26 +1,23 @@
 #!/usr/bin/env bash
 
 # -----------------------------------------------------
-# Lock Screen Wrapper (Fixed)
+# Lock Screen - Screenshot with Blur
 # -----------------------------------------------------
+# Captures current screen and locks with blur effect
 
-# 1. Clear old temp file to prevent stale locks
-rm -f /tmp/current_wallpaper.png
+SCREENSHOT_PATH="/tmp/lock_screenshot.png"
 
-# 2. Robustly find the current wallpaper
-#    (Greps for any standard image file path starting with /)
-current_wall=$(swww query | grep -oE '/[^"]+\.(png|jpg|jpeg|webp)' | head -n 1)
+# Remove old screenshot if it exists
+rm -f "$SCREENSHOT_PATH"
 
-echo "Detected Wallpaper: $current_wall" # Debug output
+# Create screenshot and wait for it to complete
+grim "$SCREENSHOT_PATH" 2>/dev/null
 
-# 3. Copy with fallback
-if [ -f "$current_wall" ]; then
-    cp "$current_wall" /tmp/current_wallpaper.png
-else
-    echo "Wallpaper not found or invalid path. Using fallback."
-    # CHANGE THIS to a real file on your system
-    cp ~/Pictures/Wallpapers/default.png /tmp/current_wallpaper.png 
+# Ensure screenshot exists, use black fallback if not
+if [ ! -f "$SCREENSHOT_PATH" ]; then
+    # Create a solid grey image as fallback
+    convert -size 1920x1080 xc:"#191414" "$SCREENSHOT_PATH" 2>/dev/null
 fi
 
-# 4. Launch Hyprlock
+# Launch hyprlock with the screenshot ready
 hyprlock

@@ -1,7 +1,7 @@
 [
     {
         "label": "lock",
-        "action": "hyprlock",
+        "action": "exec ~/.config/hypr/scripts/lock.sh",
         "text": "Lock",
         "keybind": "l"
     },
