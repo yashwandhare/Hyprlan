@@ -17,10 +17,25 @@ if ! command -v rofi &>/dev/null; then
     exit 1
 fi
 
-# Launch Rofi
-# -p "Clipboard" sets the prompt text
-# -theme sets the config file
-cliphist list | rofi -dmenu \
+# Build menu with a Clear option
+HISTORY=$(cliphist list)
+MENU="🗑️  Clear All\n────────────────\n$HISTORY"
+
+# Show Rofi menu
+SELECTED=$(echo -e "$MENU" | rofi -dmenu \
     -p "Clipboard" \
-    -theme "$ROFI_THEME" \
-    | cliphist decode | wl-copy
+    -theme "$ROFI_THEME")
+
+# Handle selection
+case "$SELECTED" in
+    "")
+        exit 0
+        ;;
+    "🗑️  Clear All")
+        cliphist wipe
+        notify-send "Clipboard" "History cleared" -u low
+        ;;
+    *)
+        echo "$SELECTED" | cliphist decode | wl-copy
+        ;;
+esac

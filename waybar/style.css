@@ -91,7 +91,9 @@ tooltip label {
 #memory,
 #temperature,
 #custom-gpu,
-#custom-kdeconnect {
+#custom-kdeconnect,
+#custom-mic-indicator,
+#custom-mic-muted {
     background: transparent;
     padding: 0 8px;
     margin: 0 3px;
@@ -165,8 +167,18 @@ tooltip label {
     color: #c9a0dc;
 }
 
+#custom-screen-record {
+    color: #d99a9a;
+}
+
 #custom-mic-indicator {
     color: #d99a9a;
+    font-size: 17px;
+}
+
+#custom-mic-muted {
+    color: #d99a9a;
+    font-size: 18px;
 }
 
 @keyframes blink {

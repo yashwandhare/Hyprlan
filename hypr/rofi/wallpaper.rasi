@@ -23,7 +23,7 @@ window {
     location: center;
     anchor: center;
     background-color: rgba(20, 20, 20, 0.85);
-    border: 2px;
+    border: 1px;
     border-color: #A2B6C9;
 }
 

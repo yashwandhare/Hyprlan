@@ -239,6 +239,7 @@
 
   "custom/mic-muted": {
     "exec": "~/.config/hyprland/waybar/scripts/mic-muted.sh",
+    "return-type": "json",
     "format": "{}",
     "interval": 2
   }
