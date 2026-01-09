@@ -68,7 +68,7 @@ selected="$(
 )"
 
 # -----------------------------------------------------
-# APPLY WALLPAPER
+# Apply wallpaper and update lockscreen
 # -----------------------------------------------------
 if [ -n "$selected" ]; then
     wall="$WALLDIR/$selected"
@@ -81,6 +81,10 @@ if [ -n "$selected" ]; then
             --transition-bezier "$TRANSITION_BEZIER"
             
         ln -sf "$wall" "$STATE"
+        
+        # Update hyprlock.conf to use the new wallpaper as lockscreen background
+        sed -i "s|path = .*|path = $wall|" ~/.config/hyprland/hypr/hyprlock.conf
+        
         notify-send "Wallpaper" "Applied: $(basename "$selected")" -i "$wall"
     fi
 fi
