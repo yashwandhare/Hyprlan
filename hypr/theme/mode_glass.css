@@ -1,0 +1,5 @@
+@define-color bg @base_bg_alpha;
+
+window#waybar {
+    background: @bg;
+}

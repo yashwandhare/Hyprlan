@@ -1,23 +1,9 @@
 #!/usr/bin/env bash
+command -v socat >/dev/null 2>&1 || exit 0
+command -v playerctl >/dev/null 2>&1 || exit 0
 
-# -----------------------------------------------------
-# Auto-pause media when screen locks
-# -----------------------------------------------------
+[ -z "$HYPRLAND_INSTANCE_SIGNATURE" ] && exit 0
 
-# Check if socat is installed
-if ! command -v socat &> /dev/null; then
-    notify-send "Error" "socat not found. Media pause will not work." -u critical
-    exit 1
-fi
-
-# Listen to Hyprland socket for lock events
-handle_event() {
-    local event="$1"
-    if [[ "$event" == "lockscreenevent>>"* ]]; then
-        playerctl -a pause
-    fi
-}
-
-socat -u UNIX-CONNECT:/tmp/hypr/$HYPRLAND_INSTANCE_SIGNATURE/.socket2.sock - | while read -r line; do
-    handle_event "$line"
+socat -u UNIX-CONNECT:/tmp/hypr/$HYPRLAND_INSTANCE_SIGNATURE/.socket2.sock - 2>/dev/null | while read -r line; do
+    [[ "$line" == "lockscreenevent>>"* ]] && playerctl -a pause 2>/dev/null
 done

@@ -19,7 +19,6 @@
     "mpris"
   ],
 
-  // Visual Order (Right to Left): Battery -> BT -> WiFi -> KDE -> GPU -> RAM -> Temp -> CPU -> Focus -> Caffeine
   "modules-right": [
     "custom/screen-record",
     "custom/mic-indicator",
@@ -37,9 +36,6 @@
     "battery"
   ],
 
-  // -------------------------------------------------------------------------
-  // MODULES
-  // -------------------------------------------------------------------------
   "hyprland/workspaces": {
     "disable-scroll": true,
     "all-outputs": true,
@@ -112,7 +108,7 @@
   },
 
   "cpu": {
-    "interval": 2,
+    "interval": 3,
     "format": " {usage}%",
     "on-click": "kitty -e btop"
   },
@@ -184,7 +180,7 @@
     "exec": "~/.config/hyprland/waybar/scripts/gpu-usage.sh",
     "return-type": "json",
     "format": "{}",
-    "interval": 2,
+    "interval": 3,
     "tooltip": true,
     "on-click": "kitty -e nvtop"
   },
@@ -193,7 +189,7 @@
     "exec": "~/.config/hyprland/waybar/scripts/kdeconnect-status.sh",
     "return-type": "json",
     "format": "{}",
-    "interval": 5,
+    "interval": 10,
     "tooltip": true,
     "on-click": "kdeconnect-app"
   },
@@ -201,7 +197,7 @@
   "custom/caffeine": {
     "exec": "~/.config/hyprland/waybar/scripts/caffeine-indicator.sh",
     "return-type": "json",
-    "interval": 3,
+    "interval": 5,
     "format": "{}",
     "on-click": "~/.config/hyprland/hypr/scripts/toggle-caffeine.sh",
     "signal": 8
@@ -210,7 +206,7 @@
   "custom/focus-mode": {
     "exec": "~/.config/hyprland/waybar/scripts/focus-mode-indicator.sh",
     "return-type": "json",
-    "interval": 3,
+    "interval": 5,
     "format": "{}",
     "on-click": "~/.config/hyprland/hypr/scripts/toggle-focus-mode.sh",
     "signal": 9
@@ -219,21 +215,21 @@
   "custom/notifications": {
     "exec": "~/.config/hyprland/waybar/scripts/notifications-icon.sh",
     "return-type": "json",
-    "interval": 2,
+    "interval": 3,
     "format": "{}",
     "on-click": "~/.config/hyprland/waybar/scripts/notifications-menu.sh"
   },
   
   "custom/screen-record": {
     "exec": "~/.config/hyprland/waybar/scripts/screen-record.sh",
-    "interval": 2,
+    "interval": 3,
     "format": "{}"
   },
 
   "custom/mic-indicator": {
     "exec": "~/.config/hyprland/waybar/scripts/mic-indicator.sh",
     "return-type": "json",
-    "interval": 1,
+    "interval": 2,
     "format": "{}"
   },
 
@@ -241,6 +237,6 @@
     "exec": "~/.config/hyprland/waybar/scripts/mic-muted.sh",
     "return-type": "json",
     "format": "{}",
-    "interval": 2
+    "interval": 3
   }
 }

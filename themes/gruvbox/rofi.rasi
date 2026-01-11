@@ -1,0 +1,17 @@
+* {
+    /* Solid Base */
+    bg-solid:    #282828;
+    
+    /* Glass Base (90%) */
+    bg-glass:    #282828E6;
+    
+    /* Default to Glass if not overridden */
+    bg:          @bg-glass;
+    
+    fg:          #ebdbb2;
+    accent:      #fabd2f;
+    accent-dim:  #fabd2f26;
+    border:      #fabd2f33;
+    disabled:    #a89984;
+    urgent:      #cc241d;
+}

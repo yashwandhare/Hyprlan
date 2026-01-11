@@ -1,0 +1,12 @@
+* {
+    bg: @bg-glass;
+}
+
+window {
+    background-color: @bg-glass;
+    border-color: @accent;
+}
+
+mainbox {
+    background-color: @bg-glass;
+}

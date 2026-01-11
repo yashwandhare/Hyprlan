@@ -1,0 +1,12 @@
+* {
+    bg-solid:    #1e1e2e;
+    bg-glass:    rgba(30, 30, 46, 0.95);
+    bg-transparent: rgba(30, 30, 46, 0.95);
+    bg:          @bg-glass;
+    fg:          #cdd6f4;
+    accent:      #cba6f7;
+    accent-dim:  #cba6f726;
+    border:      #cba6f733;
+    disabled:    #6c7086;
+    urgent:      #f38ba8;
+}

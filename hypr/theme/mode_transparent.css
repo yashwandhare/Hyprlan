@@ -1,0 +1,5 @@
+@define-color bg @base_bg_transparent;
+
+window#waybar {
+    background: @bg;
+}

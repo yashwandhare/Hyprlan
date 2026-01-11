@@ -1,3 +1,6 @@
+@import "/home/kazuto/.config/hyprland/hypr/theme/rofi-colors.rasi"
+@import "/home/kazuto/.config/hyprland/hypr/theme/rofi-mode.rasi"
+
 configuration {
     show-icons: true;
     scroll-method: 0;
@@ -9,86 +12,108 @@ configuration {
 }
 
 * {
-    background-color: transparent;
-    text-color: #E3E6E8;
+    text-color: @fg;
     font: "JetBrains Mono Nerd Font 12";
     border-radius: 0px;
     margin: 0px;
     padding: 0px;
+    background-color: @bg;
 }
 
 window {
-    width: 60%;            /* Wide enough for 5 columns */
-    height: 55%;           /* Balanced for 2 rows + input */
+    width: 60%;
+    height: 55%;
     location: center;
     anchor: center;
-    background-color: rgba(20, 20, 20, 0.85);
+    background-color: @bg;
     border: 1px;
-    border-color: #A2B6C9;
+    border-color: @accent;
 }
 
 mainbox {
     padding: 20px;
-    spacing: 15px;
+    spacing: 10px;
+    background-color: @bg;
     children: [ inputbar, listview ];
+}
+
+title {
+    display: none;
+}
+
+refresh-button {
+    display: none;
 }
 
 inputbar {
     children: [ prompt, entry ];
+    background-color: transparent;
+    text-color: @accent;
+    padding: 0px 0px 10px 0px;
+    border: 0px 0px 1px 0px;
+    border-color: @border;
+    margin: 0px 0px 10px 0px;
     spacing: 10px;
-    padding: 12px 16px;
-    background-color: #1e1e1e;
-    border: 1px;
-    border-color: #45475a;
 }
 
 prompt {
-    text-color: #A2B6C9;
+    padding: 10px 14px;
+    background-color: @accent;
+    text-color: @bg-solid;
     font: "JetBrains Mono Nerd Font Bold 12";
+    border-radius: 0px;
+    horizontal-align: 0.5;
+    vertical-align: 0.5;
 }
 
 entry {
-    background-color: transparent;
-    text-color: #E3E6E8;
-    placeholder: "Search Wallpaper...";
-    placeholder-color: #5b606b;
+    padding: 10px;
+    background-color: @border;
+    text-color: @fg;
+    placeholder: "";
+    placeholder-color: @disabled;
+    border-radius: 0px;
+    vertical-align: 0.5;
+    font-weight: bold;
 }
 
 listview {
-    columns: 5;            /* 5 items across */
-    lines: 2;              /* 2 rows down */
+    columns: 5;
+    lines: 2;
     spacing: 15px;
     fixed-height: false;
     padding: 10px;
     scroll-method: 1;
+    background-color: @bg;
 }
 
 scrollbar {
     width: 4px;
-    handle-color: #A2B6C9;
+    handle-color: @accent;
     handle-width: 4px;
-    background-color: #1e1e1e;
+    background-color: @border;
 }
 
 element {
     orientation: vertical;
     padding: 10px;
     spacing: 5px;
-    background-color: transparent;
+    background-color: @bg;
     border: 1px;
     border-color: transparent;
 }
 
 element selected.normal {
-    background-color: rgba(162, 182, 201, 0.15);
-    border-color: #A2B6C9;
-    text-color: #A2B6C9;
+    background-color: @accent-dim;
+    border-color: @accent;
+    text-color: @accent;
 }
 
 element-icon {
-    size: 165px;           /* Large, clear thumbnails */
+    size: 165px;
     horizontal-align: 0.5;
     cursor: inherit;
+    background-color: transparent;
 }
 
 element-text {
@@ -96,9 +121,10 @@ element-text {
     horizontal-align: 0.5;
     text-color: inherit;
     font: "JetBrains Mono Nerd Font Medium 10";
+    background-color: transparent;
 }
 
 element selected.normal element-text {
-    text-color: #A2B6C9;
+    text-color: @accent;
     font: "JetBrains Mono Nerd Font Bold 10";
 }

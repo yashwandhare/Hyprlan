@@ -1,6 +1,6 @@
-/* -----------------------------------------------------
- * General
- * ----------------------------------------------------- */
+@import url("/home/kazuto/.config/hyprland/hypr/theme/waybar-colors.css");
+@import url("/home/kazuto/.config/hyprland/hypr/theme/waybar-mode.css");
+
 * {
     font-family: "JetBrains Mono Nerd Font", "JetBrains Mono", sans-serif;
     font-size: 15px;
@@ -10,67 +10,68 @@
 }
 
 window#waybar {
-    background: rgba(20, 20, 20, 0.85);
-    color: #E3E6E8;
-    border-bottom: 1px solid rgba(162, 182, 201, 0.2);
+    background: @bg;
+    color: @fg;
+    border-bottom: 1px solid @border;
+    transition: background-color 0.4s cubic-bezier(0.4, 0.0, 0.2, 1.0);
 }
 
 tooltip {
     background: rgba(30, 30, 30, 0.95);
-    border: 1px solid #A2B6C9;
+    border: 1px solid @accent;
+    border-radius: 6px;
 }
 
 tooltip label {
-    color: #E3E6E8;
+    color: @fg;
 }
 
-/* -----------------------------------------------------
- * Workspaces
- * ----------------------------------------------------- */
 #workspaces {
     margin: 0 4px;
 }
 
 #workspaces button {
     padding: 0 10px;
-    color: #7F8490;
+    color: @disabled;
     border-bottom: 2px solid transparent;
-    transition: all 0.3s ease;
+    transition: all 0.25s cubic-bezier(0.4, 0.0, 0.2, 1.0);
 }
 
 #workspaces button.active {
-    color: #A2B6C9;
-    border-bottom: 2px solid #A2B6C9;
+    color: @accent;
+    border-bottom: 2px solid @accent;
     background: transparent;
 }
 
 #workspaces button:hover {
-    color: #E3E6E8;
+    color: @fg;
     background: rgba(255, 255, 255, 0.05);
 }
 
 #workspaces button.urgent {
-    color: #d99a9a;
+    color: @urgent;
 }
 
-/* -----------------------------------------------------
- * Window Title
- * ----------------------------------------------------- */
 #window {
     color: #9fa3ac;
     margin-left: 10px;
 }
 
-/* -----------------------------------------------------
- * Center Modules
- * ----------------------------------------------------- */
+.modules-left > widget:first-child > #workspaces {
+    margin-left: 0;
+}
+
+.modules-right > widget:last-child > #clock {
+    margin-right: 0;
+}
+
 #clock {
-    color: #E3E6E8;
+    color: @fg;
     margin: 0 10px;
 }
 
 #mpris {
-    color: #A2B6C9;
+    color: @accent;
     margin: 0 10px;
 }
 
@@ -78,112 +79,143 @@ tooltip label {
     padding: 0 10px;
 }
 
-/* -----------------------------------------------------
- * Right Modules
- * ----------------------------------------------------- */
 #pulseaudio,
 #network,
 #bluetooth,
 #battery,
-#custom-caffeine,
-#custom-focus-mode,
 #cpu,
 #memory,
 #temperature,
 #custom-gpu,
+#custom-caffeine,
+#custom-focus-mode,
 #custom-kdeconnect,
 #custom-mic-indicator,
-#custom-mic-muted {
+#custom-mic-muted,
+#custom-screen-record {
     background: transparent;
     padding: 0 8px;
     margin: 0 3px;
 }
 
-/* Hardware Stats (Grey) */
-#cpu, #memory, #temperature, #custom-caffeine, #custom-gpu {
+#cpu,
+#memory,
+#temperature,
+#custom-gpu,
+#custom-caffeine {
     color: #9fa3ac;
+}
+
+/* Preserve special indicator colors regardless of theme (increase specificity) */
+window#waybar #custom-focus-mode {
+    color: #c9a0dc;
+}
+
+window#waybar #custom-screen-record {
+    color: #ff6b6b;
+}
+
+window#waybar #custom-mic-indicator {
+    color: #ff6b6b;
+}
+
+window#waybar #custom-mic-muted {
+    color: #ff6b6b;
 }
 
 #temperature.critical {
-    color: #d99a9a;
+    color: @urgent;
 }
 
-/* KDE Connect */
-#custom-kdeconnect {
-    color: #E3E6E8;
-}
-#custom-kdeconnect.connected {
-    color: #8db8a8; /* Green */
-}
-
-/* Audio */
 #pulseaudio {
     color: #9fa3ac;
 }
+
 #pulseaudio.muted {
-    color: #d99a9a;
+    color: @urgent;
 }
 
-/* Network */
 #network {
-    color: #E3E6E8;
-}
-#network.disconnected, #network.disabled {
-    color: #7F8490;
+    color: @fg;
 }
 
-/* Bluetooth */
+#network.disconnected,
+#network.disabled {
+    color: @disabled;
+}
+
 #bluetooth {
-    color: #E3E6E8;
+    color: @fg;
 }
+
 #bluetooth.connected {
-    color: #8db8a8;
-}
-#bluetooth.disabled, #bluetooth.off {
-    color: #7F8490;
+    color: @success;
 }
 
-/* Battery Logic */
+#bluetooth.disabled,
+#bluetooth.off {
+    color: @disabled;
+}
+
 #battery {
-    color: #E3E6E8;
-}
-#battery.charging {
-    color: #F4D03F;
-}
-#battery.plugged, #battery.full {
-    color: #8db8a8;
-}
-#battery.warning, #battery.critical {
-    color: #d99a9a;
-    animation-name: blink;
-    animation-duration: 0.5s;
-    animation-timing-function: linear;
-    animation-iteration-count: infinite;
-    animation-direction: alternate;
+    color: @fg;
 }
 
-/* Custom Indicators */
+#battery.charging {
+    color: @warning;
+}
+
+/* Special indicator colors - maintained across all themes */
 #custom-focus-mode {
     color: #c9a0dc;
 }
 
 #custom-screen-record {
-    color: #d99a9a;
+    color: #ff6b6b;
 }
 
 #custom-mic-indicator {
-    color: #d99a9a;
+    color: #ff6b6b;
     font-size: 17px;
 }
 
 #custom-mic-muted {
-    color: #d99a9a;
+    color: #ff6b6b;
+    font-size: 18px;
+}
+
+#battery.plugged,
+#battery.full {
+    color: @success;
+}
+
+#battery.warning,
+#battery.critical {
+    color: @urgent;
+    animation: blink 0.7s linear infinite alternate;
+}
+
+#custom-focus-mode {
+    color: #c9a0dc;
+}
+
+#custom-screen-record {
+    color: @urgent;
+}
+
+#custom-mic-indicator {
+    color: @urgent;
+    font-size: 17px;
+}
+
+#custom-mic-muted {
+    color: @urgent;
     font-size: 18px;
 }
 
 @keyframes blink {
     to {
-        color: #000000;
-        background-color: #d99a9a;
+        color: @bg;
+        background-color: @urgent;
     }
 }

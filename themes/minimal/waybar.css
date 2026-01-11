@@ -1,0 +1,184 @@
+@define-color base_bg #141414;
+@define-color base_bg_alpha rgba(20, 20, 20, 0.85);
+@define-color base_bg_transparent transparent;
+@define-color fg #E3E6E8;
+@define-color accent #A2B6C9;
+@define-color urgent #d99a9a;
+@define-color success #8db8a8;
+@define-color warning #F4D03F;
+@define-color disabled #7F8490;
+@define-color border #A2B6C9;
+
+window#waybar {
+    background: rgba(20, 20, 20, 0.85);
+    color: #E3E6E8;
+    border-bottom: 1px solid rgba(162, 182, 201, 0.2);
+}
+
+tooltip {
+    background: rgba(30, 30, 30, 0.95);
+    border: 1px solid #A2B6C9;
+}
+
+tooltip label {
+    color: #E3E6E8;
+}
+
+#workspaces {
+    margin: 0 4px;
+}
+
+#workspaces button {
+    padding: 0 10px;
+    color: #7F8490;
+    border-bottom: 2px solid transparent;
+    transition: all 0.3s ease;
+}
+
+#workspaces button.active {
+    color: #A2B6C9;
+    border-bottom: 2px solid #A2B6C9;
+    background: transparent;
+}
+
+#workspaces button:hover {
+    color: #E3E6E8;
+    background: rgba(255, 255, 255, 0.05);
+}
+
+#workspaces button.urgent {
+    color: #d99a9a;
+}
+
+#window {
+    color: #9fa3ac;
+    margin-left: 10px;
+}
+
+#clock {
+    color: #E3E6E8;
+    margin: 0 10px;
+}
+
+#mpris {
+    color: #A2B6C9;
+    margin: 0 10px;
+}
+
+#custom-notifications {
+    padding: 0 10px;
+}
+
+#pulseaudio,
+#network,
+#bluetooth,
+#battery,
+#cpu,
+#memory,
+#temperature,
+#custom-gpu,
+#custom-caffeine,
+#custom-focus-mode,
+#custom-kdeconnect,
+#custom-mic-indicator,
+#custom-mic-muted,
+#custom-screen-record {
+    background: transparent;
+    padding: 0 8px;
+    margin: 0 3px;
+}
+
+#cpu,
+#memory,
+#temperature,
+#custom-gpu,
+#custom-caffeine {
+    color: #9fa3ac;
+}
+
+#temperature.critical {
+    color: #d99a9a;
+}
+
+#pulseaudio {
+    color: #9fa3ac;
+}
+
+#pulseaudio.muted {
+    color: #d99a9a;
+}
+
+#network {
+    color: #E3E6E8;
+}
+
+#network.disconnected,
+#network.disabled {
+    color: #7F8490;
+}
+
+#bluetooth {
+    color: #E3E6E8;
+}
+
+#bluetooth.connected {
+    color: #8db8a8;
+}
+
+#bluetooth.disabled,
+#bluetooth.off {
+    color: #7F8490;
+}
+
+#battery {
+    color: #E3E6E8;
+}
+
+#battery.charging {
+    color: #F4D03F;
+}
+
+#battery.plugged,
+#battery.full {
+    color: #8db8a8;
+}
+
+#battery.warning,
+#battery.critical {
+    color: #d99a9a;
+    animation: blink 0.7s linear infinite alternate;
+}
+
+/* Special indicator colors - maintained across all themes */
+#custom-focus-mode {
+    color: #c9a0dc;
+}
+
+#custom-screen-record {
+    color: #d99a9a;
+}
+
+#custom-mic-indicator {
+    color: #d99a9a;
+    font-size: 17px;
+}
+
+#custom-mic-muted {
+    color: #d99a9a;
+    font-size: 18px;
+}
+
+#custom-kdeconnect {
+    color: #E3E6E8;
+}
+
+#custom-kdeconnect.connected {
+    color: #8db8a8;
+}
+
+@keyframes blink {
+    to {
+        color: #000000;
+        background-color: #d99a9a;
+    }
+}

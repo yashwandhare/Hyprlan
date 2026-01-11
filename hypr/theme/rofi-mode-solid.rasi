@@ -1,0 +1,12 @@
+* {
+    bg: @bg-solid;
+}
+
+window {
+    background-color: @bg-solid;
+    border-color: @accent;
+}
+
+mainbox {
+    background-color: @bg-solid;
+}

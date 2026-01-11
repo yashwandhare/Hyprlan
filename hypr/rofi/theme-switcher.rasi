@@ -1,0 +1,109 @@
+@import "~/.config/hyprland/hypr/theme/rofi-colors.rasi"
+@import "~/.config/hyprland/hypr/theme/rofi-mode.rasi"
+
+configuration {
+    show-icons:                 true;
+    display-drun:               "";
+    display-run:                "";
+    display-window:             "";
+    drun-display-format:        "{name}";
+    window-format:              "{w} · {c} · {t}";
+    font:                       "JetBrains Mono Nerd Font 12";
+}
+
+* {
+    text-color:                  @fg;
+    margin:                      0px;
+    padding:                     0px;
+    background-color:            @bg;
+}
+
+window {
+    location:                    center;
+    anchor:                      center;
+    width:                       25%;
+    background-color:            @bg;
+    border:                      1px;
+    border-color:                @accent;
+    border-radius:               0px;
+    children:                    [ mainbox ];
+}
+
+mainbox {
+    padding:                     20px;
+    spacing:                     10px;
+    children:                    [ inputbar, listview ];
+    background-color:            @bg;
+}
+
+inputbar {
+    children:                    [ prompt, entry ];
+    background-color:            transparent;
+    text-color:                  @accent;
+    padding:                     0px 0px 10px 0px;
+    border:                      0px 0px 1px 0px;
+    border-color:                @border;
+    margin:                      0px 0px 10px 0px;
+    spacing:                     10px;
+}
+
+prompt {
+    padding:                     10px;
+    background-color:            @accent;
+    text-color:                  @bg-solid; /* Always use solid BG for prompt text contrast */
+    font:                        "JetBrains Mono Nerd Font Bold 12";
+    border-radius:               0px;
+    width:                       40px;
+    vertical-align:              0.5; 
+    horizontal-align:            0.5;
+}
+
+entry {
+    padding:                     10px;
+    background-color:            @border;
+    text-color:                  @fg;
+    placeholder:                 "";
+    placeholder-color:           @disabled;
+    border-radius:               0px;
+    vertical-align:              0.5;
+    font-weight:                 bold;
+}
+
+listview {
+    columns:                     1;
+    lines:                       10;
+    spacing:                     4px;
+    scrollbar:                   false;
+    layout:                      vertical;
+    fixed-height:                true;
+    background-color:            @bg;
+}
+
+element {
+    padding:                     8px 10px;
+    spacing:                     10px;
+    border-radius:               0px;
+    cursor:                      pointer;
+    background-color:            @bg;
+    border:                      0px;
+}
+
+element selected.normal {
+    background-color:            @accent-dim;
+    text-color:                  @accent;
+    border:                      0px 0px 0px 3px;
+    border-color:                @accent;
+}
+
+element-icon {
+    size:                        24px;
+    cursor:                      inherit;
+    background-color:            transparent;
+}
+
+element-text {
+    vertical-align:              0.5;
+    background-color:            transparent;
+    text-color:                  inherit;
+    cursor:                      inherit;
+}

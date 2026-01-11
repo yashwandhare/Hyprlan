@@ -1,75 +1,58 @@
-/* -----------------------------------------------------
- * General
- * ----------------------------------------------------- */
+@import url("/home/kazuto/.config/hyprland/hypr/theme/waybar-colors.css");
+
 * {
     background-image: none;
     box-shadow: none;
     font-family: "JetBrains Mono Nerd Font", "JetBrains Mono", sans-serif;
     font-size: 16px;
-    font-weight: normal; /* No Bold */
+    font-weight: normal;
 }
 
 window {
-    background-color: rgba(20, 20, 20, 0.85);
+    background-color: alpha(@base_bg, 0.94);
+    background: alpha(@base_bg, 0.94);
+    opacity: 1.0;
 }
 
-/* -----------------------------------------------------
- * Buttons
- * ----------------------------------------------------- */
 button {
-    background-color: #1e1e1e;
-    color: #E3E6E8;
-    
-    border: 1px solid rgba(162, 182, 201, 0.2);
-    border-radius: 0px;
-    
-    margin: 10px;
-    
-    /* Icon Layout */
+    background-color: @bg;
+    color: @fg;
+    border: 1px solid @disabled;
+    border-radius: 0;
     background-repeat: no-repeat;
-    background-position: 230px center; /* Icon on the left */
-    background-size: 45px;            /* Icon size */
-    padding-left: 50px;               /* Space for text to sit next to icon */
-    
-    transition: all 0.2s ease-in-out;
+    background-position: center;
+    background-size: 40px;
+    margin: 5px;
+    transition: all 0.2s ease;
 }
 
-/* -----------------------------------------------------
- * Hover / Active States
- * ----------------------------------------------------- */
-button:focus, 
-button:active, 
 button:hover {
-    background-color: rgba(162, 182, 201, 0.15);
-    color: #A2B6C9;
-    border: 1px solid #A2B6C9;
-    outline-style: none;
+    background-color: @accent;
+    color: @bg;
+    border: 1px solid @accent;
+    transition: all 0.2s cubic-bezier(.55,0.0,.28,1.682);
 }
 
-/* -----------------------------------------------------
- * PNG Icon Mappings
- * Ensure files exist in ~/.config/wlogout/icons/
- * ----------------------------------------------------- */
 #lock {
-    background-image: image(url("icons/lock.png"));
+    background-image: image(url("/home/kazuto/.config/hyprland/wlogout/icons/lock.png"));
 }
 
 #logout {
-    background-image: image(url("icons/logout.png"));
+    background-image: image(url("/home/kazuto/.config/hyprland/wlogout/icons/logout.png"));
 }
 
 #suspend {
-    background-image: image(url("icons/pause.png"));
+    background-image: image(url("/home/kazuto/.config/hyprland/wlogout/icons/pause.png"));
 }
 
 #hibernate {
-    background-image: image(url("icons/hibernate.png"));
-}
-
-#reboot {
-    background-image: image(url("icons/reboot.png"));
+    background-image: image(url("/home/kazuto/.config/hyprland/wlogout/icons/hibernate.png"));
 }
 
 #shutdown {
-    background-image: image(url("icons/shutdown.png"));
+    background-image: image(url("/home/kazuto/.config/hyprland/wlogout/icons/shutdown.png"));
+}
+
+#reboot {
+    background-image: image(url("/home/kazuto/.config/hyprland/wlogout/icons/reboot.png"));
 }

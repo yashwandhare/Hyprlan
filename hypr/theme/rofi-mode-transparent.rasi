@@ -1,0 +1,12 @@
+* {
+    bg: @bg-transparent;
+}
+
+window {
+    background-color: @bg-transparent;
+    border-color: @accent;
+}
+
+mainbox {
+    background-color: @bg-transparent;
+}

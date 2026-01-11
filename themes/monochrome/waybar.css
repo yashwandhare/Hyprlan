@@ -1,0 +1,10 @@
+@define-color base_bg #2f3133;             /* charcoal */
+@define-color base_bg_alpha rgba(47, 49, 51, 0.92);
+@define-color base_bg_transparent rgba(47, 49, 51, 0.92);
+@define-color fg #e3e7eb;                   /* off-white */
+@define-color accent #c8ced6;               /* soft accent */
+@define-color urgent #d97979;               /* muted red */
+@define-color success #b4d7a8;              /* muted green */
+@define-color warning #e3d39b;              /* muted yellow */
+@define-color disabled #8f9399;             /* soft gray */
+@define-color border #4a4d51;               /* mid charcoal */
