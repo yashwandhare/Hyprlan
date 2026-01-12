@@ -1,10 +1,10 @@
 @define-color base_bg #282828;
 @define-color base_bg_alpha rgba(40, 40, 40, 0.8);
 @define-color base_bg_transparent transparent;
-@define-color fg #ebdbb2;
-@define-color accent #fabd2f;
-@define-color urgent #cc241d;
-@define-color success #98971a;
-@define-color warning #d79921;
+@define-color fg #d5c4a1;
+@define-color accent #d9b487;
+@define-color urgent #c77b7b;
+@define-color success #a8b089;
+@define-color warning #c9a473;
 @define-color disabled #928374;
 @define-color border #504945;

@@ -8,10 +8,10 @@
     /* Default to Glass if not overridden */
     bg:          @bg-glass;
     
-    fg:          #ebdbb2;
-    accent:      #fabd2f;
-    accent-dim:  #fabd2f26;
-    border:      #fabd2f33;
+    fg:          #d5c4a1;
+    accent:      #d9b487;
+    accent-dim:  #d9b48726;
+    border:      #d9b48733;
     disabled:    #a89984;
-    urgent:      #cc241d;
+    urgent:      #c77b7b;
 }

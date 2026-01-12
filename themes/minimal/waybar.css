@@ -1,5 +1,5 @@
-@define-color base_bg #141414;
-@define-color base_bg_alpha rgba(20, 20, 20, 0.85);
+@define-color base_bg #1a1a1a;
+@define-color base_bg_alpha rgba(26, 26, 26, 0.85);
 @define-color base_bg_transparent transparent;
 @define-color fg #E3E6E8;
 @define-color accent #A2B6C9;

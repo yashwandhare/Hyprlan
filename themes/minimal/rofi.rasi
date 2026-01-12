@@ -1,9 +1,9 @@
 * {
     /* Solid Base */
-    bg-solid:    #141414;
+    bg-solid:    #1a1a1a;
     
     /* Glass Base (90%) */
-    bg-glass:    #141414E6;
+    bg-glass:    #1a1a1aE6;
     
     /* Default to Glass if not overridden */
     bg:          @bg-glass;
