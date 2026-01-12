@@ -95,7 +95,7 @@ selected="$(
 
     if [ "$apply_ok" -eq 1 ]; then
         ln -sf "$wall" "$STATE"
-        sed -i "s|^path = .*|path = $wall|" ~/.config/hyprland/hypr/hyprlock.conf
+        "$HOME/.config/hyprland/hypr/scripts/update-lockscreen-wallpaper.sh" "$wall"
         notify-send "Wallpaper" "Applied: $(basename "$selected")" -i "$wall"
         
         # Auto-refresh cache in background for next picker open

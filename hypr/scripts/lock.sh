@@ -8,4 +8,8 @@ grim "$SCREENSHOT_PATH" 2>/dev/null || {
         convert -size 1920x1080 xc:"#191414" "$SCREENSHOT_PATH"
     fi
 }
+
+# Update hyprlock to use current wallpaper
+"$HOME/.config/hyprland/hypr/scripts/update-lockscreen-wallpaper.sh"
+
 hyprlock
