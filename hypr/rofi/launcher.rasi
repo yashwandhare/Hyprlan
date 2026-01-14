@@ -35,8 +35,8 @@ configuration {
 window {
     location: center;
     anchor: center;
-    width: 30%;
-    height: 40%;
+    width: 550px;
+    height: 550px;
     background-color: @bg;
     border: 1px;
     border-color: @accent;
