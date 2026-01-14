@@ -345,12 +345,21 @@ wifi_hotspot_menu() {
     local ctx=$1
     [[ -f "$HS_SSID_FILE" ]] && HS_SSID=$(cat "$HS_SSID_FILE") || HS_SSID="MyHotspot"
     [[ -f "$HS_PASS_FILE" ]] && HS_PASS=$(cat "$HS_PASS_FILE") || HS_PASS="password123"
-    
-    local status="OFF"; nmcli -t -f NAME connection show --active | grep -q "^$HS_SSID$" && status="ON"
-    
+
+    # Detect hotspot state by checking if the Wi-Fi interface is in AP mode (reliable method)
+    local iface
+    iface=$(wifi_get_iface)
+    local status="OFF"
+
+    # Check if this interface is actively running in AP mode
+    if nmcli -t -f IN-USE,MODE device wifi list ifname "$iface" 2>/dev/null | grep -q '^\*:ap$'; then
+        status="ON"
+    fi
+
+
     local opts="$I_BACK Back\n$I_HOTSPOT Toggle Hotspot [$status]\n$I_EDIT Change Name ($HS_SSID)\n$I_EDIT Change Password ($HS_PASS)"
     local sel=$(echo -e "$opts" | run_rofi "Hotspot Settings")
-    
+
     case "$sel" in
         "") exit 0 ;;
         *"Back") exec "$0" "wifi" "$ctx" ;;
@@ -358,11 +367,13 @@ wifi_hotspot_menu() {
             if [[ "$status" == "ON" ]]; then
                 nmcli connection down id "$HS_SSID"; notify "Hotspot Stopped"
             else
-                local iface=$(wifi_get_iface)
-                nmcli connection delete id "$HS_SSID" >/dev/null 2>&1
-                nmcli con add type wifi ifname "$iface" con-name "$HS_SSID" autoconnect no ssid "$HS_SSID" >/dev/null 2>&1
-                nmcli con modify "$HS_SSID" 802-11-wireless.mode ap 802-11-wireless.band bg ipv4.method shared >/dev/null 2>&1
-                nmcli con modify "$HS_SSID" wifi-sec.key-mgmt wpa-psk wifi-sec.psk "$HS_PASS" >/dev/null 2>&1
+                # Only create the hotspot connection if it does not exist
+                if ! nmcli -t -f NAME connection show | grep -qx "$HS_SSID"; then
+                    nmcli con add type wifi ifname "$iface" con-name "$HS_SSID" autoconnect no ssid "$HS_SSID" >/dev/null 2>&1
+                    nmcli con modify "$HS_SSID" 802-11-wireless.mode ap 802-11-wireless.band bg ipv4.method shared >/dev/null 2>&1
+                    nmcli con modify "$HS_SSID" wifi-sec.key-mgmt wpa-psk wifi-sec.psk "$HS_PASS" >/dev/null 2>&1
+                    nmcli connection modify "$HS_SSID" connection.autoconnect yes >/dev/null 2>&1
+                fi
                 if nmcli connection up id "$HS_SSID"; then notify "Hotspot Started"; else notify "Failed"; fi
             fi
             exec "$0" "wifi" "$ctx" "hotspot"
