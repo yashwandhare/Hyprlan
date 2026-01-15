@@ -3,8 +3,10 @@ LOCK_FILE="$HOME/.cache/battery-notify.lock"
 exec 9>"$LOCK_FILE"
 flock -n 9 || exit 0
 
+
+# State file to track if 'Battery Full' notification was sent
+BAT_FULL_STATE_FILE="$HOME/.cache/battery-full-notified"
 LAST_NOTIFY_FILE="$HOME/.cache/battery-last-notify"
-FULL_NOTIFIED=false
 
 BAT_PATH=$(find /sys/class/power_supply -maxdepth 1 -name "BAT*" | head -n1)
 [ -z "$BAT_PATH" ] && exit 1
@@ -12,11 +14,17 @@ BAT_PATH=$(find /sys/class/power_supply -maxdepth 1 -name "BAT*" | head -n1)
 CAP=$(cat "$BAT_PATH/capacity" 2>/dev/null)
 STATUS=$(cat "$BAT_PATH/status" 2>/dev/null)
 
-if [ "$STATUS" = "Not charging" ] && [ "$CAP" -ge 80 ] && [ "$FULL_NOTIFIED" = false ]; then
-    notify-send "Battery" "Charge limit reached ($CAP%)" -u low -i battery-full-charged
-    FULL_NOTIFIED=true
+if [ "$STATUS" = "Not charging" ] && [ "$CAP" -ge 80 ]; then
+    # Only send notification if not already sent in this charge cycle
+    if [ ! -f "$BAT_FULL_STATE_FILE" ]; then
+        notify-send "Battery" "Charge limit reached ($CAP%)" -u low -i battery-full-charged
+        touch "$BAT_FULL_STATE_FILE"
+    fi
 elif [ "$STATUS" = "Discharging" ]; then
-    FULL_NOTIFIED=false
+    # Reset full notification state if battery drops below 90%
+    if [ "$CAP" -lt 90 ]; then
+        [ -f "$BAT_FULL_STATE_FILE" ] && rm "$BAT_FULL_STATE_FILE"
+    fi
 
     NOW=$(date +%s)
     LAST_NOTIFY=$(cat "$LAST_NOTIFY_FILE" 2>/dev/null || echo 0)
@@ -33,4 +41,10 @@ elif [ "$STATUS" = "Discharging" ]; then
     fi
 else
     [ -f "$LAST_NOTIFY_FILE" ] && rm "$LAST_NOTIFY_FILE"
+    # Also reset full notification state if battery drops below 90% in other states
+    if [ "$CAP" -lt 90 ]; then
+        [ -f "$BAT_FULL_STATE_FILE" ] && rm "$BAT_FULL_STATE_FILE"
+    fi
 fi
+
+# State file logic: BAT_FULL_STATE_FILE is created when 'Battery Full' notification is sent, and removed when battery drops below 90%.

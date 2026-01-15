@@ -25,7 +25,6 @@ I_CHECK="󰄬"
 I_WARN=""
 I_EXIT="󰗼"
 I_ETH="󰈀"
-I_HOTSPOT="󰐹"
 I_EDIT="󰒓"
 
 # Bluetooth Icons
@@ -336,60 +335,7 @@ bt_device_menu() {
 # ==============================================================================
 # MODULE: WI-FI
 # ==============================================================================
-HS_SSID_FILE="${XDG_CACHE_HOME:-$HOME/.cache}/rofi-wifi-hotspot-ssid"
-HS_PASS_FILE="${XDG_CACHE_HOME:-$HOME/.cache}/rofi-wifi-hotspot-pass"
-
 wifi_get_iface() { nmcli -t -f DEVICE,TYPE device | grep ":wifi$" | head -n1 | cut -d: -f1; }
-
-wifi_hotspot_menu() {
-    local ctx=$1
-    [[ -f "$HS_SSID_FILE" ]] && HS_SSID=$(cat "$HS_SSID_FILE") || HS_SSID="MyHotspot"
-    [[ -f "$HS_PASS_FILE" ]] && HS_PASS=$(cat "$HS_PASS_FILE") || HS_PASS="password123"
-
-    # Detect hotspot state by checking if the Wi-Fi interface is in AP mode (reliable method)
-    local iface
-    iface=$(wifi_get_iface)
-    local status="OFF"
-
-    # Check if this interface is actively running in AP mode
-    if nmcli -t -f IN-USE,MODE device wifi list ifname "$iface" 2>/dev/null | grep -q '^\*:ap$'; then
-        status="ON"
-    fi
-
-
-    local opts="$I_BACK Back\n$I_HOTSPOT Toggle Hotspot [$status]\n$I_EDIT Change Name ($HS_SSID)\n$I_EDIT Change Password ($HS_PASS)"
-    local sel=$(echo -e "$opts" | run_rofi "Hotspot Settings")
-
-    case "$sel" in
-        "") exit 0 ;;
-        *"Back") exec "$0" "wifi" "$ctx" ;;
-        *"Toggle"*)
-            if [[ "$status" == "ON" ]]; then
-                nmcli connection down id "$HS_SSID"; notify "Hotspot Stopped"
-            else
-                # Only create the hotspot connection if it does not exist
-                if ! nmcli -t -f NAME connection show | grep -qx "$HS_SSID"; then
-                    nmcli con add type wifi ifname "$iface" con-name "$HS_SSID" autoconnect no ssid "$HS_SSID" >/dev/null 2>&1
-                    nmcli con modify "$HS_SSID" 802-11-wireless.mode ap 802-11-wireless.band bg ipv4.method shared >/dev/null 2>&1
-                    nmcli con modify "$HS_SSID" wifi-sec.key-mgmt wpa-psk wifi-sec.psk "$HS_PASS" >/dev/null 2>&1
-                    nmcli connection modify "$HS_SSID" connection.autoconnect yes >/dev/null 2>&1
-                fi
-                if nmcli connection up id "$HS_SSID"; then notify "Hotspot Started"; else notify "Failed"; fi
-            fi
-            exec "$0" "wifi" "$ctx" "hotspot"
-            ;;
-        *"Change Name"*) 
-            local val=$(echo "" | run_rofi "New Name" "$THEME_MAIN" -lines 0)
-            [[ -n "$val" ]] && echo "$val" > "$HS_SSID_FILE"
-            exec "$0" "wifi" "$ctx" "hotspot"
-            ;;
-        *"Change Password"*)
-            local val=$(echo "" | run_rofi "New Password" "$THEME_MAIN" -lines 0)
-            [[ -n "$val" ]] && echo "$val" > "$HS_PASS_FILE"
-            exec "$0" "wifi" "$ctx" "hotspot"
-            ;;
-    esac
-}
 
 wifi_edit_deep() {
     local profile="$1"; local ctx="$2"
@@ -473,21 +419,15 @@ wifi_connect_menu() {
 
 module_wifi() {
     local ctx="$1"
-    local submode="${2:-}"
-    
-    if [[ "$submode" == "hotspot" ]]; then
-        wifi_hotspot_menu "$ctx"
-        return
-    fi
 
     local header=""
     [[ "$ctx" == "menu" ]] && header="$I_BACK  Back\n"
-    header+="$I_HOTSPOT  Hotspot Settings\n$I_REFRESH  Scan Networks\n----------------------"
-    
+    header+="$I_REFRESH  Scan Networks\n----------------------"
+
     local wired=$(nmcli -t -f DEVICE,TYPE,STATE,CONNECTION device | awk -F: -v i="$I_ETH" -v c="$I_CHECK" '$2=="ethernet" && $3=="connected"{print c"  "i"  Wired: "$4" (Connected)"}')
-    
+
     local wifilist=$(nmcli -t -f ACTIVE,SSID,SIGNAL,BARS,SECURITY,RATE device wifi list --rescan no 2>/dev/null | sort -t: -k3 -nr | awk -F: -v lock="$I_LOCK" -v check="$I_CHECK" '{if ($2=="") next; if (seen[$2]++) next; icon = ($3 > 75) ? "󰤨" : ($3 > 50) ? "󰤢" : ($3 > 25) ? "󰤟" : "󰤯"; sec = ($5!="" && $5!="--") ? lock : "  "; if ($1=="yes") print check"  "icon"  "$2"  ("$3"%)  ["$6"]"; else print "   "icon" "sec" "$2"  ("$3"%)"}')
-    
+
     if [[ -z "$wifilist" ]]; then
        nmcli device wifi rescan
        wifilist=$(nmcli -t -f ACTIVE,SSID,SIGNAL,BARS,SECURITY,RATE device wifi list --rescan no 2>/dev/null | sort -t: -k3 -nr | awk -F: -v lock="$I_LOCK" -v check="$I_CHECK" '{if ($2=="") next; if (seen[$2]++) next; icon = ($3 > 75) ? "󰤨" : ($3 > 50) ? "󰤢" : ($3 > 25) ? "󰤟" : "󰤯"; sec = ($5!="" && $5!="--") ? lock : "  "; if ($1=="yes") print check"  "icon"  "$2"  ("$3"%)  ["$6"]"; else print "   "icon" "sec" "$2"  ("$3"%)"}')
@@ -499,27 +439,23 @@ module_wifi() {
     [[ $(nmcli radio wifi) == "disabled" ]] && content+="\n$I_WARN Enable Wi-Fi"
 
     local sel=$(echo -e "$content" | run_rofi "Wi-Fi Networks")
-    
+
     case "$sel" in
         "") exit 0 ;;
         *"Back") exec "$0" ;;
-        
-        # FIX: Explicit full string match
-        *"Hotspot Settings"*) wifi_hotspot_menu "$ctx" ;;
         *"Scan Networks"*) 
             notify "Scanning for new networks..."
             nmcli device wifi rescan
             exec "$0" "wifi" "$ctx" 
             ;;
-            
         *"Enable Wi-Fi") nmcli radio wifi on; exec "$0" "wifi" "$ctx" ;;
         *"$I_CHECK"*) wifi_edit_menu "Active" "$ctx" ;;
         *)
             local raw=$(echo "$sel" | sed "s/^   .[^ ]* . //; s/  (.*)$//")
             local sec="false"; [[ "$sel" == *"$I_LOCK"* ]] && sec="true"
-            
-            # FIX: Fallthrough Guard - Do NOT allow Hotspot/Scan text to pass as SSID
-            if [[ "$raw" == *"Scan Networks"* || "$raw" == *"Hotspot Settings"* || -z "$raw" ]]; then
+
+            # FIX: Fallthrough Guard - Do NOT allow Scan text to pass as SSID
+            if [[ "$raw" == *"Scan Networks"* || -z "$raw" ]]; then
                 exec "$0" "wifi" "$ctx"
             else
                 wifi_connect_menu "$raw" "$sec" "$ctx"
