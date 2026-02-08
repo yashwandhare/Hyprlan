@@ -483,6 +483,7 @@ main_menu() {
     opts+="󰄜  LocalSend\n"
     opts+="󰀵  Software Store\n"
     opts+="󰄜  KDE Connect\n"
+    opts+="󰍲  Windows VM\n"
     opts+="󰆍  Hyprland Config"
 
     local choice=$(echo -e "$opts" | run_rofi "Control Center")
@@ -500,6 +501,7 @@ main_menu() {
         *"LocalSend"*)      flatpak run org.localsend.localsend_app 2>/dev/null || localsend_app 2>/dev/null & ;;
         *"Software Store"*) flatpak run org.gnome.Software 2>/dev/null || gnome-software & ;;
         *"KDE Connect"*)    kdeconnect-app & ;;
+        *"Windows VM"*)     nohup "$SCRIPTS_DIR/winvm.sh" >/dev/null 2>&1 & ;;
         *"Hyprland Config"*) code ~/.config/hyprland & ;;
     esac
 }
